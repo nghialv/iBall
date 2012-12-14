@@ -13,17 +13,20 @@
 AGLKVertexAttribArrayBuffer* vertexPositionBuffer;
 AGLKVertexAttribArrayBuffer* vertexNormalBuffer;
 AGLKVertexAttribArrayBuffer* vertexTextureCoordBuffer;
+NSMutableArray* textureInforArray;
 
 @interface Ball : Entity{
     float angle;
     GLKVector3 rotationAxis;
-    GLKTextureInfo *textureInfo;
+    int textureIndex;
 }
 
 + (void)enableBuffer;
 + (void)destroyBuffer;
 
-- (id)initWithPosVelRadiTex:(GLKVector3)pos andVel:(GLKVector3)vel andRadius:(float)radius andTex:(NSString *)tex;
++ (void)addTexture:(NSString *)imagefile;
+
+- (id)initWithPosVelRadiTex:(GLKVector3)pos andVel:(GLKVector3)vel andRadius:(float)radius andTex:(int)texIndex;
 - (void)draw:(GLKBaseEffect *)effect;
 
 - (void)redictX;

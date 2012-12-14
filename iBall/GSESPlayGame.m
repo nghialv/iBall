@@ -76,7 +76,14 @@
     GLKMatrix4 projectionMatrix = GLKMatrix4MakeOrtho(-SPACE_WIDTH/2, SPACE_WIDTH/2, -SPACE_HEIGHT/2, SPACE_HEIGHT/2, 1000000, -1);
     self.effect.transform.projectionMatrix = projectionMatrix;
     
+    
+    // Ball initilization
     [Ball initialize];
+    
+    // Add texture for ball
+    [Ball addTexture:@"bia.jpeg"];
+    [Ball addTexture:@"bia2.jpeg"];
+    
     
     ballArray = [[NSMutableArray alloc] init];
     
@@ -85,14 +92,20 @@
 
     NSLog(@"SETUP GL");
     
-    Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:@"bia.jpeg"];
+    Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:0];
     [ballArray addObject:ball];
     
     pos.y = -100.0;
     vel.y = -3.0;
     
-    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:@"bia2.jpeg"];
+    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
     [ballArray addObject:ball2];
+    
+    pos.y = 200.0;
+    vel.y = -4.0;
+    
+    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+    [ballArray addObject:ball3];
 }
 
 - (void)tearDownGL

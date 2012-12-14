@@ -36,6 +36,8 @@ static BOOL initialized = NO;
                                     numberOfVertices:sizeof(sphereTexCoords) / (2 * sizeof(GLfloat))
                                     bytes:sphereTexCoords
                                     usage:GL_STATIC_DRAW];
+        
+        textureInforArray = [[NSMutableArray alloc] init];
     }
 }
 
@@ -65,9 +67,24 @@ static BOOL initialized = NO;
     vertexPositionBuffer = nil;
     vertexNormalBuffer = nil;
     vertexTextureCoordBuffer = nil;
+    [textureInforArray removeAllObjects];
+    textureInforArray = nil;
 }
 
-- (id)initWithPosVelRadiTex:(GLKVector3)pos andVel:(GLKVector3)vel andRadius:(float)radius andTex:(NSString *)tex
++ (void)addTexture:(NSString *)imagefile
+{
+    CGImageRef imageRef = [[UIImage imageNamed:imagefile] CGImage];
+    
+    GLKTextureInfo *texInfo = [GLKTextureLoader
+                   textureWithCGImage:imageRef
+                   options:[NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSNumber numberWithBool:YES],
+                            GLKTextureLoaderOriginBottomLeft, nil]
+                   error:NULL];
+    [textureInforArray addObject:texInfo];
+}
+
+- (id)initWithPosVelRadiTex:(GLKVector3)pos andVel:(GLKVector3)vel andRadius:(float)radius andTex:(int)texIndex
 {
     self = [super init];
     if (self) {
@@ -75,17 +92,10 @@ static BOOL initialized = NO;
         velocity = vel;
         scale = GLKVector3Make(radius*2, radius*2, radius*2);
         angle = 0;
-        
-        CGImageRef imageRef =
-        [[UIImage imageNamed:tex] CGImage];
-        
-        textureInfo = [GLKTextureLoader
-                       textureWithCGImage:imageRef
-                       options:[NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSNumber numberWithBool:YES],
-                                GLKTextureLoaderOriginBottomLeft, nil]
-                       error:NULL];
-        
+        if (texIndex > 0)
+            textureIndex = texIndex % [textureInforArray count];
+        else
+            textureIndex = 0;
     }
     return self;
 }
@@ -110,8 +120,9 @@ static BOOL initialized = NO;
 
 - (void)draw:(GLKBaseEffect *)effect
 {
-    effect.texture2d0.name = textureInfo.name;
-    effect.texture2d0.target = textureInfo.target;
+    GLKTextureInfo *tex = [textureInforArray objectAtIndex:textureIndex];
+    effect.texture2d0.name = tex.name;
+    effect.texture2d0.target = tex.target;
     
     GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
     modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, position.x, position.y, position.z);
