@@ -95,17 +95,17 @@
     Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:0];
     [ballArray addObject:ball];
     
-    pos.y = -100.0;
-    vel.y = -3.0;
-    
-    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
-    [ballArray addObject:ball2];
-    
-    pos.y = 200.0;
-    vel.y = -4.0;
-    
-    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
-    [ballArray addObject:ball3];
+//    pos.y = -100.0;
+//    vel.y = -3.0;
+//    
+//    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+//    [ballArray addObject:ball2];
+//    
+//    pos.y = 200.0;
+//    vel.y = -4.0;
+//    
+//    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+//    [ballArray addObject:ball3];
 }
 
 - (void)tearDownGL
@@ -127,7 +127,7 @@
             [b redictX];
             b.position = GLKVector3Add(b.position,b.velocity);
        
-        //[gCommunicationManager sendBallData:position andVelocity:velocity];
+            [gCommunicationManager sendBallData:b.position andVelocity:b.velocity];
         }
     
         
@@ -154,7 +154,7 @@
                         b.position = GLKVector3Add(b.position,b.velocity);
                     }
                     
-                    {  // Update other car's velocity
+                    {  // Update other ball's velocity
                         b2.velocity = GLKVector3Subtract(b2Vel,b2Velx);
                         b2.velocity = GLKVector3Add(b2.velocity, bVelx);
                         
@@ -210,6 +210,7 @@
     //position.x = position.y = position.z = 0.0;
     //position = startPosition;
     //velocity = startVelocity;
+    NSLog(@"REVEIVE BALL");
 }
 
 // =============================
