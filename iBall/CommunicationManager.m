@@ -69,7 +69,7 @@ CommunicationManager *gCommunicationManager;
 - (void) connectToDevice:(NSString *)peerId
 {
     NSLog(@"Connect to Device");
-    [mySession connectToPeer:peerId withTimeout:100];
+    [mySession connectToPeer:peerId withTimeout:10];
 }
 
 // get name of device from peerid
@@ -84,9 +84,10 @@ CommunicationManager *gCommunicationManager;
     
 }
 
-- (void) sendBallData:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity
+- (void) sendBallData:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
 {
-    NSString *message = [[NSString alloc] initWithFormat:@"%d %f %f %f %f %f %f", MESG_TYPE_SEND_BALL,startPosition.x, startPosition.y, startPosition.z, startVelocity.x,startVelocity.y,startVelocity.z];
+    NSLog(@"Send ball");
+    NSString *message = [[NSString alloc] initWithFormat:@"%d %f %f %f %f %f %f %d", MESG_TYPE_SEND_BALL,startPosition.x, startPosition.y, startPosition.z, startVelocity.x,startVelocity.y,startVelocity.z, texIndex];
     
     NSData *sendData = [message dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -123,14 +124,18 @@ CommunicationManager *gCommunicationManager;
         }
         else if (mesgType == MESG_TYPE_SEND_BALL)
         {
+            NSLog(@"Reveice add new ball mesg");
+            
             GLKVector3 p = GLKVector3Make([[params objectAtIndex:1] floatValue],
                                           [[params objectAtIndex:2] floatValue],
                                           [[params objectAtIndex:3] floatValue]);
             GLKVector3 v = GLKVector3Make([[params objectAtIndex:4] floatValue],
                                           [[params objectAtIndex:5] floatValue],
                                           [[params objectAtIndex:6] floatValue]);
+            int texIndex = [[params objectAtIndex:7] intValue];
+            
             if (delegate) {
-                [delegate receiveNewBall:p andVelocity:v];
+                [delegate receiveNewBall:p andVelocity:v andTexIndex:texIndex];
             }
         }
     }

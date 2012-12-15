@@ -17,6 +17,7 @@
     float SPACE_HEIGHT;
     
     NSMutableArray *ballArray;
+    NSMutableArray *willRemoveBallArray;
 }
 
 - (void)setupGL;

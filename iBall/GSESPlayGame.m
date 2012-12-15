@@ -46,6 +46,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    [gCommunicationManager setDelegate:self];
 }
 
 - (void) dealloc
@@ -86,6 +88,7 @@
     
     
     ballArray = [[NSMutableArray alloc] init];
+    willRemoveBallArray = [[NSMutableArray alloc] init];
     
     GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
     GLKVector3 vel = GLKVector3Make(2.5, 4.0, 0.0);
@@ -95,11 +98,12 @@
     Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:0];
     [ballArray addObject:ball];
     
-//    pos.y = -100.0;
-//    vel.y = -3.0;
-//    
-//    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
-//    [ballArray addObject:ball2];
+    
+    pos.y = -100.0;
+    vel.y = -3.0;
+    
+    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+    [ballArray addObject:ball2];
 //    
 //    pos.y = 200.0;
 //    vel.y = -4.0;
@@ -117,19 +121,23 @@
 {
     for (Ball *b in ballArray) {
         [b update];
-    
+        
         if ((b.position.y + BALL_RADIUS) > SPACE_HEIGHT/2 || (b.position.y -BALL_RADIUS) < -SPACE_HEIGHT/2) {
             [b redictY];
             b.position = GLKVector3Add(b.position,b.velocity);
         }
 
-        if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2 || (b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2) {
+        if ((b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2) {
             [b redictX];
             b.position = GLKVector3Add(b.position,b.velocity);
-       
-            [gCommunicationManager sendBallData:b.position andVelocity:b.velocity];
         }
-    
+        
+        // send ball
+        if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2)
+        {
+            [gCommunicationManager sendBallData:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+            [willRemoveBallArray addObject:b];
+        }
         
         for (Ball *b2 in ballArray) {
             if (b != b2) {
@@ -161,12 +169,13 @@
                         // update
                         b2.position = GLKVector3Add(b2.position,b2.velocity);
                     }
-
-                    
                 }
             }
         }
     }
+    
+    [ballArray removeObjectsInArray:willRemoveBallArray];
+    [willRemoveBallArray removeAllObjects];
 }
 
 
@@ -205,12 +214,14 @@
     
 }
 
-- (void) receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity
+- (void) receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
 {
-    //position.x = position.y = position.z = 0.0;
-    //position = startPosition;
-    //velocity = startVelocity;
     NSLog(@"REVEIVE BALL");
+    GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
+    
+    
+    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:startVelocity andRadius:BALL_RADIUS andTex:texIndex];
+    [ballArray addObject:ball2];
 }
 
 // =============================

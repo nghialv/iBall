@@ -21,6 +21,8 @@ NSMutableArray* textureInforArray;
     int textureIndex;
 }
 
+@property int textureIndex;
+
 + (void)enableBuffer;
 + (void)destroyBuffer;
 

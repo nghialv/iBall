@@ -18,7 +18,7 @@
 
     - (void)receiveGameStart;
     - (void)receiveCalibrationData;
-    - (void)receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity;
+- (void)receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
 @end
 
 
@@ -59,7 +59,7 @@ extern CommunicationManager *gCommunicationManager;
 - (void) connectToDevice:(NSString *)peerId;
 
 - (void) sendCalibrationData;
-- (void) sendBallData:(GLKVector3) startPosition andVelocity:(GLKVector3)startVelocity;
+- (void) sendBallData:(GLKVector3) startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
 
 - (void) destroyMySession;
 
