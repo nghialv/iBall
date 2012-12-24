@@ -13,6 +13,7 @@
 
 @implementation GSESPlayGame
 
+#pragma mark - Mine
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -20,26 +21,6 @@
         // Custom initialization
     }
     return self;
-}
-
-- (void)configureLight
-{
-    self.effect.light0.enabled = GL_TRUE;
-    self.effect.light0.diffuseColor = GLKVector4Make(
-                                                1.0f, // Red
-                                                1.0f, // Green
-                                                1.0f, // Blue
-                                                1.0f);// Alpha
-    self.effect.light0.position = GLKVector4Make(
-                                            1.0f,
-                                            0.0f,
-                                            -0.8f,
-                                            0.0f);
-    self.effect.light0.ambientColor = GLKVector4Make(
-                                                0.2f, // Red
-                                                0.2f, // Green
-                                                0.2f, // Blue
-                                                1.0f);// Alpha
 }
 
 - (void)viewDidLoad
@@ -59,6 +40,70 @@
     
     [Ball destroyBuffer];
     [gCommunicationManager setDelegate:nil];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (IBAction) backToMenu:(id)sender
+{
+    NSLog(@"Back to menu");
+    [m_pManager doStateChange:@"MainMenuStoryboardID"];
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.paused = !self.paused;
+}
+
+#pragma mark - CommunicationManagerDelegate
+- (void) connectionStatusChanged
+{
+    
+}
+
+- (void) receiveGameStart
+{
+    
+}
+
+- (void) receiveCalibrationData
+{
+    
+}
+
+- (void) receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
+{
+    NSLog(@"REVEIVE BALL");
+    GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
+    
+    
+    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:startVelocity andRadius:BALL_RADIUS andTex:texIndex];
+    [ballArray addObject:ball2];
+}
+
+#pragma mark - GLESGameState3D
+- (void)configureLight
+{
+    self.effect.light0.enabled = GL_TRUE;
+    self.effect.light0.diffuseColor = GLKVector4Make(
+                                                     1.0f, // Red
+                                                     1.0f, // Green
+                                                     1.0f, // Blue
+                                                     1.0f);// Alpha
+    self.effect.light0.position = GLKVector4Make(
+                                                 1.0f,
+                                                 0.0f,
+                                                 -0.8f,
+                                                 0.0f);
+    self.effect.light0.ambientColor = GLKVector4Make(
+                                                     0.2f, // Red
+                                                     0.2f, // Green
+                                                     0.2f, // Blue
+                                                     1.0f);// Alpha
 }
 
 - (void)setupGL
@@ -92,7 +137,7 @@
     
     GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
     GLKVector3 vel = GLKVector3Make(2.5, 4.0, 0.0);
-
+    
     NSLog(@"SETUP GL");
     
     Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:0];
@@ -104,19 +149,18 @@
     
     Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
     [ballArray addObject:ball2];
-//    
-//    pos.y = 200.0;
-//    vel.y = -4.0;
-//    
-//    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
-//    [ballArray addObject:ball3];
+    //
+    //    pos.y = 200.0;
+    //    vel.y = -4.0;
+    //
+    //    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+    //    [ballArray addObject:ball3];
 }
 
 - (void)tearDownGL
 {
 }
 
-#pragma mark - GLKView and GLKViewController delegate methods
 - (void)update
 {
     for (Ball *b in ballArray) {
@@ -126,7 +170,7 @@
             [b redictY];
             b.position = GLKVector3Add(b.position,b.velocity);
         }
-
+        
         if ((b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2) {
             [b redictX];
             b.position = GLKVector3Add(b.position,b.velocity);
@@ -135,8 +179,11 @@
         // send ball
         if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2)
         {
-            [gCommunicationManager sendBallData:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
-            [willRemoveBallArray addObject:b];
+            [b redictX];
+            b.position = GLKVector3Add(b.position,b.velocity);
+            
+            //            [gCommunicationManager sendBallData:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+            //            [willRemoveBallArray addObject:b];
         }
         
         for (Ball *b2 in ballArray) {
@@ -181,7 +228,7 @@
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0); 
+    glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -194,53 +241,7 @@
         [b draw:self.effect];
     }
     
-     glEnable(GL_DEPTH_TEST);
-}
-
-
-// CommunicationManagerDelegate
-- (void) connectionStatusChanged
-{
-    
-}
-
-- (void) receiveGameStart
-{
-    
-}
-
-- (void) receiveCalibrationData
-{
-    
-}
-
-- (void) receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
-{
-    NSLog(@"REVEIVE BALL");
-    GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
-    
-    
-    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:startVelocity andRadius:BALL_RADIUS andTex:texIndex];
-    [ballArray addObject:ball2];
-}
-
-// =============================
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction) backToMenu:(id)sender
-{
-    NSLog(@"Back to menu");
-    [m_pManager doStateChange:@"MainMenuStoryboardID"];
-}
-
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.paused = !self.paused;
+    glEnable(GL_DEPTH_TEST);
 }
 
 @end

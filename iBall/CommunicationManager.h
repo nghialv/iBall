@@ -18,7 +18,7 @@
 
     - (void)receiveGameStart;
     - (void)receiveCalibrationData;
-- (void)receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
+    - (void)receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
 @end
 
 

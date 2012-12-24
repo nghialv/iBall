@@ -78,7 +78,19 @@ CommunicationManager *gCommunicationManager;
     return [mySession displayNameForPeer:peerId];
 }
 
-// send data
+// destroy session when application will terminate
+- (void)destroyMySession
+{
+    mySession.delegate = nil;
+	[mySession setDataReceiveHandler:nil withContext:nil];
+	mySession = nil;
+    
+    [availablePeerList removeAllObjects];
+    [connectedPeerList removeAllObjects];
+}
+
+
+#pragma mark - Send and receive data
 - (void) sendCalibrationData
 {
     
@@ -141,18 +153,7 @@ CommunicationManager *gCommunicationManager;
     }
 }
 
-// destroy session when application will terminate
-- (void)destroyMySession
-{
-    mySession.delegate = nil;
-	[mySession setDataReceiveHandler:nil withContext:nil];
-	mySession = nil;
-    
-    [availablePeerList removeAllObjects];
-    [connectedPeerList removeAllObjects];
-}
-
-// SESSION ---------------------------------------
+#pragma mark - GKSessionDelegate
 - (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
 {
 	switch (state) {

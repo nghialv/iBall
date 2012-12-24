@@ -14,6 +14,7 @@
     NSMutableArray *connectedPeers;
 }
 
+#pragma mark - Mine
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -36,8 +37,7 @@
     [m_pManager doStateChange:@"SettingsStoryboardID"];
 }
 
-
-// ConnectionManagerDelegate
+#pragma mark - ConnectionManagerDelegate
 - (void) connectionStatusChanged
 {
     NSLog(@"TRANG THAI KET NOI THAY DOI");
@@ -57,13 +57,12 @@
     
 }
 
-- (void) receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity
+- (void) receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
 {
     
 }
 
-// SECTION ================
-
+#pragma mark - Table Section
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
@@ -83,8 +82,7 @@
     return @"Connected Devices";
 }
 
-// CELL ===================
-
+#pragma mark - Table Cell
 // is used to fill the cell data
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
