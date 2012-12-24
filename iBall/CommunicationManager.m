@@ -59,6 +59,7 @@ CommunicationManager *gCommunicationManager;
         mySession = [[GKSession alloc] initWithSessionID:sessionID displayName:nil sessionMode:GKSessionModePeer];
     
     mySession.delegate = self;
+    mySession.disconnectTimeout = 10;
     [mySession setDataReceiveHandler:self withContext:nil];
     mySession.available = YES;
     
@@ -81,14 +82,15 @@ CommunicationManager *gCommunicationManager;
 // destroy session when application will terminate
 - (void)destroyMySession
 {
+    mySession.available = NO;
     mySession.delegate = nil;
+    [mySession disconnectFromAllPeers];
 	[mySession setDataReceiveHandler:nil withContext:nil];
 	mySession = nil;
     
     [availablePeerList removeAllObjects];
     [connectedPeerList removeAllObjects];
 }
-
 
 #pragma mark - Send and receive data
 - (void) sendCalibrationData
@@ -154,6 +156,7 @@ CommunicationManager *gCommunicationManager;
 }
 
 #pragma mark - GKSessionDelegate
+// didChangeState
 - (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
 {
 	switch (state) {
@@ -163,6 +166,9 @@ CommunicationManager *gCommunicationManager;
             if (![availablePeerList containsObject:peerID]) {
 				[availablePeerList addObject:peerID];
 			}
+            
+            // what for?
+            [NSThread sleepForTimeInterval:0.5];
             
 			break;
             
@@ -193,6 +199,7 @@ CommunicationManager *gCommunicationManager;
     }
 }
 
+// didReceiveConnectionRequestFromPeer
 - (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID
 {
 	NSError* error = nil;
@@ -208,16 +215,33 @@ CommunicationManager *gCommunicationManager;
 	[session acceptConnectionFromPeer:peerID error:&error];
 	if (error)
 		NSLog(@"%@", error);
+    
+    //new
+    if (delegate) {
+        [delegate connectionStatusChanged];
+    }
 }
 
+// connectionWithPeerFailed
 - (void)session:(GKSession *)session connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error
 {
 	NSLog(@"%@|%@", peerID, error);
+    
+    //new
+    if (delegate) {
+        [delegate connectionStatusChanged];
+    }
 }
 
+// didFailWithError
 - (void)session:(GKSession *)session didFailWithError:(NSError *)error
 {
 	NSLog(@"%@", error);
+    
+    //new
+    if (delegate) {
+        [delegate connectionStatusChanged];
+    }
 }
 
 @end
