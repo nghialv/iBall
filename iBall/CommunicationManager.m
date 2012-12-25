@@ -14,7 +14,7 @@ CommunicationManager *gCommunicationManager;
 @synthesize delegate;
 @synthesize availablePeerList;
 @synthesize connectedPeerList;
-@synthesize DEVICE_WIDTH, DEVICE_HEIGHT, DEVICE_RATIO, isMainDevice;
+@synthesize DEVICE_TYPE, DEVICE_WIDTH, DEVICE_HEIGHT, DEVICE_RATIO, isMainDevice;
 
 // Khoi tao gCommunication lan dau tien
 + (void)initialize
@@ -45,6 +45,11 @@ CommunicationManager *gCommunicationManager;
     sessionID = @"iBall";
     searchOn = false;
     isMainDevice = false;
+    
+    
+    // for position, direction
+    startGesture = [NSDate date];
+    
     
     return self;
 }
@@ -93,9 +98,27 @@ CommunicationManager *gCommunicationManager;
 }
 
 #pragma mark - Send and receive data
-- (void) sendCalibrationData
+- (void) sendCalibrationData:(CGPoint)pEndPoint andDirection:(int)pDirection
 {
+    startGesture = [NSDate date];
+    direction = pDirection;
+    endPoint = pEndPoint;
+    NSLog(@"SWIPE");
     
+    NSString *message = [[NSString alloc] initWithFormat:@"%d %d %d %d %d", MESG_TYPE_CONNECT,DEVICE_TYPE, pDirection, (int)pEndPoint.x, (int)pEndPoint.y];
+    NSLog(@"%@", message);
+    
+    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSError *error = nil;
+    [mySession sendData:data
+                toPeers:connectedPeerList
+           withDataMode:GKSendDataReliable
+                  error:&error];
+    
+    if (error) {
+        NSLog(@"Send error: %@", error);
+    }
 }
 
 - (void) sendBallData:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
@@ -128,6 +151,19 @@ CommunicationManager *gCommunicationManager;
         
         if (mesgType == MESG_TYPE_CONNECT) {
             NSLog(@"Reveice Connect mesg");
+            double elapsed_ms = [startGesture timeIntervalSinceNow] * -1000.0;
+            
+            NSLog(@"elapsed: %f", elapsed_ms);
+            if (elapsed_ms > 1000.0)
+                return;
+            
+            int peerDeviceType = [[params objectAtIndex:1] intValue];
+            int peerDeviceDirection = [[params objectAtIndex:2] intValue];
+            CGPoint peerEndPoint;
+            peerEndPoint.x = [[params objectAtIndex:3] floatValue];
+            peerEndPoint.y = [[params objectAtIndex:4] floatValue];
+            
+            [self calculateTransitionMatrix:peerDeviceType andDeviceDirection:peerDeviceDirection andPeerEndpoint:peerEndPoint];
         }
         else if (mesgType == MESG_TYPE_GAME_START)
         {
@@ -154,6 +190,113 @@ CommunicationManager *gCommunicationManager;
         }
     }
 }
+
+#pragma mark - Calculate Transition Matrix
+-(void) calculateTransitionMatrix:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(CGPoint)peerEndPoint
+{
+    int peerDeviceWidth;
+    int peerDeviceHeight;
+    int X;
+    int Y;
+    
+    float ratio;
+    
+    if (peerDeviceType == 3) {   //ipad
+        ratio = 163.0/132.0;
+        peerDeviceWidth = (int)(768.0*ratio);
+        peerDeviceHeight = (int)(1004.0*ratio);
+    }
+    else
+    {
+        ratio = 132.0/163.0;
+        peerDeviceWidth = (int)(320.0*ratio);
+        peerDeviceHeight = (int)(460.0*ratio);
+    }
+    
+    X = (int)(peerEndPoint.x*ratio);
+    Y = (int)(peerEndPoint.y*ratio);
+    
+    // draw on myself
+    if (DEVICE_TYPE == DEVICE_TYPE_IPHONE3GS) {          //iphone
+        
+        switch (direction) {
+            case DIRECTION_UP: // up
+                //point1View.frame = CGRectMake(0, 0, 320, 10);
+                break;
+            case DIRECTION_RIGHT: // right
+                //point1View.frame = CGRectMake(310, 0, 10, 480);
+                break;
+            case DIRECTION_DOWN: // down
+                //point1View.frame = CGRectMake(0, 450, 320, 10);
+                break;
+            case DIRECTION_LEFT: // left
+                //point1View.frame = CGRectMake(0, 0, 10, 480);
+                break;
+            default:
+                break;
+        }
+    } else if (DEVICE_TYPE == DEVICE_TYPE_IPADMINI)     //ipad
+    {
+        point1 = CGPointMake(endPoint.x, endPoint.y);
+        point2 = CGPointMake(endPoint.x, endPoint.y);
+        
+        switch (direction) {
+            case DIRECTION_UP:  //up
+                point1.y = point2.y = 0;
+                break;
+            case DIRECTION_RIGHT:  //right
+                point1.x = point2.x = DEVICE_WIDTH;
+                break;
+            case DIRECTION_DOWN:  //down
+                point1.y = point2.y = DEVICE_HEIGHT;
+                break;
+            case DIRECTION_LEFT: //left
+                point1.x = point2.x = 0;
+                break;
+            default:
+                break;
+        }
+        if (direction == DIRECTION_RIGHT || direction == DIRECTION_LEFT) {
+            switch (peerDeviceDirection) {
+                case DIRECTION_UP: //up
+                case DIRECTION_DOWN: // down
+                    point1.y -= X;
+                    point2.y += peerDeviceWidth - X;
+                    break;
+                case DIRECTION_RIGHT: //right
+                case DIRECTION_LEFT: //left
+                    point1.y -= Y;
+                    point2.y += peerDeviceHeight - Y;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            switch (peerDeviceDirection) {
+                case DIRECTION_UP: //up
+                case DIRECTION_DOWN: // down
+                    point1.x -= X;
+                    point2.x += peerDeviceWidth - X;
+                    break;
+                case DIRECTION_RIGHT: //right
+                case DIRECTION_LEFT: //left
+                    point1.x -= Y;
+                    point2.x += peerDeviceHeight - Y;
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+        
+        //point1View.frame = CGRectMake(point1.x, point1.y, 10, 10);
+        //point2View.frame = CGRectMake(point2.x, point2.y, 10, 10);
+    }
+
+}
+
 
 #pragma mark - GKSessionDelegate
 // didChangeState
@@ -243,5 +386,6 @@ CommunicationManager *gCommunicationManager;
         [delegate connectionStatusChanged];
     }
 }
+
 
 @end

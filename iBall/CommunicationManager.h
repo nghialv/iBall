@@ -37,9 +37,20 @@ extern CommunicationManager *gCommunicationManager;
     NSMutableArray *connectedPeerList;
     NSMutableArray *availablePeerList;
     
+    int DEVICE_TYPE;
     int DEVICE_WIDTH;
     int DEVICE_HEIGHT;
     float DEVICE_RATIO;
+    
+    
+    // for position, direction matrix
+    NSDate *startGesture;
+    
+    CGPoint point1;
+    CGPoint point2;
+    
+    int direction; //up: 1, right: 2, down: 3, left: 4
+    CGPoint endPoint;
 }
 
 @property (assign) id<CommunicationManagerDelegate> delegate;
@@ -48,6 +59,7 @@ extern CommunicationManager *gCommunicationManager;
 @property (nonatomic, readonly) NSMutableArray *availablePeerList;
 @property (nonatomic, readonly) NSMutableArray  *connectedPeerList;
 
+@property (nonatomic, assign) int DEVICE_TYPE;
 @property (nonatomic, assign) int DEVICE_WIDTH;
 @property (nonatomic, assign) int DEVICE_HEIGHT;
 @property (nonatomic, assign) float DEVICE_RATIO;
@@ -58,8 +70,10 @@ extern CommunicationManager *gCommunicationManager;
 - (NSString *)getNameOfDevice:(NSString *)peerId;
 - (void) connectToDevice:(NSString *)peerId;
 
-- (void) sendCalibrationData;
+- (void) sendCalibrationData:(CGPoint)pEndPoint andDirection:(int)pDirection;
 - (void) sendBallData:(GLKVector3) startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
+
+- (void) calculateTransitionMatrix:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(CGPoint)peerEndPoint;
 
 - (void) destroyMySession;
 

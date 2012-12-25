@@ -29,6 +29,8 @@
 	// Do any additional setup after loading the view.
     
     [gCommunicationManager setDelegate:self];
+    
+    [self startRecognizationGestures];
 }
 
 - (void) dealloc
@@ -54,10 +56,10 @@
     [m_pManager doStateChange:@"MainMenuStoryboardID"];
 }
 
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.paused = !self.paused;
-}
+//- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    self.paused = !self.paused;
+//}
 
 #pragma mark - CommunicationManagerDelegate
 - (void) connectionStatusChanged
@@ -242,6 +244,56 @@
     }
     
     glEnable(GL_DEPTH_TEST);
+}
+
+#pragma mark - Gesture
+- (void)startRecognizationGestures
+{
+    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(screenWasSwiped:)];
+    swipeUp.numberOfTouchesRequired = 1;
+    swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
+    [self.view addGestureRecognizer:swipeUp];
+    
+    UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(screenWasSwiped:)];
+    swipeDown.numberOfTouchesRequired = 1;
+    swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
+    [self.view addGestureRecognizer:swipeDown];
+    
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(screenWasSwiped:)];
+    swipeLeft.numberOfTouchesRequired = 1;
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:swipeLeft];
+    
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(screenWasSwiped:)];
+    swipeRight.numberOfTouchesRequired = 1;
+    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:swipeRight];
+}
+
+- (void)screenWasSwiped:(UISwipeGestureRecognizer *)swipe
+{
+    switch (swipe.direction) {
+        case UISwipeGestureRecognizerDirectionLeft:
+            [gCommunicationManager sendCalibrationData:endPoint andDirection:DIRECTION_LEFT];
+            break;
+        case UISwipeGestureRecognizerDirectionRight:
+            [gCommunicationManager sendCalibrationData:endPoint andDirection:DIRECTION_RIGHT];
+            break;
+        case UISwipeGestureRecognizerDirectionUp:
+            [gCommunicationManager sendCalibrationData:endPoint andDirection:DIRECTION_UP];
+            break;
+        case UISwipeGestureRecognizerDirectionDown:
+            [gCommunicationManager sendCalibrationData:endPoint andDirection:DIRECTION_DOWN];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    endPoint = [touch locationInView:self.view];
 }
 
 @end

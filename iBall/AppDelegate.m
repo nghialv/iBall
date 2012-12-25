@@ -22,8 +22,21 @@
     [gCommunicationManager setDEVICE_WIDTH:window.frame.size.width];
     [gCommunicationManager setDEVICE_HEIGHT:window.frame.size.height];
     
+    NSString *deviceType = [UIDevice currentDevice].model;
+    int devicetype = DEVICE_TYPE_IPADMINI;
+    
+    if([deviceType isEqualToString:@"iPhone"]) {
+        devicetype = DEVICE_TYPE_IPHONE3GS;
+    }
+    else if([deviceType isEqualToString:@"iPod touch"]) {
+        devicetype = DEVICE_TYPE_IPOD;
+    }
+    
+    [gCommunicationManager setDEVICE_TYPE:devicetype];
+    
     NSLog(@"DEVICE_WIDTH: %d", gCommunicationManager.DEVICE_WIDTH);
     NSLog(@"DEVICE_HEIGHT: %d", gCommunicationManager.DEVICE_HEIGHT);
+    NSLog(@"DEVICE_TYPE: %d", gCommunicationManager.DEVICE_TYPE);
     
     if (gCommunicationManager.DEVICE_HEIGHT > 1000)
         [gCommunicationManager setDEVICE_RATIO:200.0/163.0];

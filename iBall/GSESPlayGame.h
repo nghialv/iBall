@@ -10,7 +10,7 @@
 #import "CommunicationManager.h"
 #import "Ball.h"
 
-@interface GSESPlayGame : GLESGameState3D <CommunicationManagerDelegate>
+@interface GSESPlayGame : GLESGameState3D <CommunicationManagerDelegate, UIGestureRecognizerDelegate>
 {
     @private
     float SPACE_WIDTH;
@@ -18,11 +18,18 @@
     
     NSMutableArray *ballArray;
     NSMutableArray *willRemoveBallArray;
+    
+    // for position, direction matrix
+    CGPoint endPoint;
 }
 
 - (void)setupGL;
 - (void)tearDownGL;
 
 - (IBAction) backToMenu:(id)sender;
+
+
+- (void)screenWasSwiped:(UISwipeGestureRecognizer*)swipe;
+- (void)startRecognizationGestures;
 
 @end
