@@ -50,7 +50,7 @@ extern CommunicationManager *gCommunicationManager;
     CGPoint point2;
     
     int direction; //up: 1, right: 2, down: 3, left: 4
-    CGPoint endPoint;
+    GLKVector3 endPoint;
 }
 
 @property (assign) id<CommunicationManagerDelegate> delegate;
@@ -73,7 +73,9 @@ extern CommunicationManager *gCommunicationManager;
 - (void) sendCalibrationData:(CGPoint)pEndPoint andDirection:(int)pDirection;
 - (void) sendBallData:(GLKVector3) startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
 
-- (void) calculateTransitionMatrix:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(CGPoint)peerEndPoint;
+- (void) calculateTransitionMatrix:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(GLKVector3)peerEndPoint;
+
+- (GLKVector3) convertCoordinationTo3D:(CGPoint) point;
 
 - (void) destroyMySession;
 

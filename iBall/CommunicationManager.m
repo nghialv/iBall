@@ -102,10 +102,9 @@ CommunicationManager *gCommunicationManager;
 {
     startGesture = [NSDate date];
     direction = pDirection;
-    endPoint = pEndPoint;
-    NSLog(@"SWIPE");
+    endPoint = [self convertCoordinationTo3D:pEndPoint];
     
-    NSString *message = [[NSString alloc] initWithFormat:@"%d %d %d %d %d", MESG_TYPE_CONNECT,DEVICE_TYPE, pDirection, (int)pEndPoint.x, (int)pEndPoint.y];
+    NSString *message = [[NSString alloc] initWithFormat:@"%d %d %d %f %f", MESG_TYPE_CONNECT,DEVICE_TYPE, pDirection, endPoint.x, endPoint.y];
     NSLog(@"%@", message);
     
     NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
@@ -154,12 +153,12 @@ CommunicationManager *gCommunicationManager;
             double elapsed_ms = [startGesture timeIntervalSinceNow] * -1000.0;
             
             NSLog(@"elapsed: %f", elapsed_ms);
-            if (elapsed_ms > 1000.0)
+            if (elapsed_ms > 300.0)
                 return;
             
             int peerDeviceType = [[params objectAtIndex:1] intValue];
             int peerDeviceDirection = [[params objectAtIndex:2] intValue];
-            CGPoint peerEndPoint;
+            GLKVector3 peerEndPoint= GLKVector3Make(0.0f, 0.0f, 0.0f);
             peerEndPoint.x = [[params objectAtIndex:3] floatValue];
             peerEndPoint.y = [[params objectAtIndex:4] floatValue];
             
@@ -192,109 +191,154 @@ CommunicationManager *gCommunicationManager;
 }
 
 #pragma mark - Calculate Transition Matrix
--(void) calculateTransitionMatrix:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(CGPoint)peerEndPoint
+-(void) calculateTransitionMatrix:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(GLKVector3)peerEndPoint
 {
-    int peerDeviceWidth;
-    int peerDeviceHeight;
-    int X;
-    int Y;
-    
-    float ratio;
-    
-    if (peerDeviceType == 3) {   //ipad
-        ratio = 163.0/132.0;
-        peerDeviceWidth = (int)(768.0*ratio);
-        peerDeviceHeight = (int)(1004.0*ratio);
-    }
-    else
-    {
-        ratio = 132.0/163.0;
-        peerDeviceWidth = (int)(320.0*ratio);
-        peerDeviceHeight = (int)(460.0*ratio);
-    }
-    
-    X = (int)(peerEndPoint.x*ratio);
-    Y = (int)(peerEndPoint.y*ratio);
-    
-    // draw on myself
-    if (DEVICE_TYPE == DEVICE_TYPE_IPHONE3GS) {          //iphone
+    float angle = -M_PI_2;
         
-        switch (direction) {
-            case DIRECTION_UP: // up
-                //point1View.frame = CGRectMake(0, 0, 320, 10);
-                break;
-            case DIRECTION_RIGHT: // right
-                //point1View.frame = CGRectMake(310, 0, 10, 480);
-                break;
-            case DIRECTION_DOWN: // down
-                //point1View.frame = CGRectMake(0, 450, 320, 10);
-                break;
-            case DIRECTION_LEFT: // left
-                //point1View.frame = CGRectMake(0, 0, 10, 480);
-                break;
-            default:
-                break;
-        }
-    } else if (DEVICE_TYPE == DEVICE_TYPE_IPADMINI)     //ipad
-    {
-        point1 = CGPointMake(endPoint.x, endPoint.y);
-        point2 = CGPointMake(endPoint.x, endPoint.y);
-        
-        switch (direction) {
-            case DIRECTION_UP:  //up
-                point1.y = point2.y = 0;
-                break;
-            case DIRECTION_RIGHT:  //right
-                point1.x = point2.x = DEVICE_WIDTH;
-                break;
-            case DIRECTION_DOWN:  //down
-                point1.y = point2.y = DEVICE_HEIGHT;
-                break;
-            case DIRECTION_LEFT: //left
-                point1.x = point2.x = 0;
-                break;
-            default:
-                break;
-        }
-        if (direction == DIRECTION_RIGHT || direction == DIRECTION_LEFT) {
-            switch (peerDeviceDirection) {
-                case DIRECTION_UP: //up
-                case DIRECTION_DOWN: // down
-                    point1.y -= X;
-                    point2.y += peerDeviceWidth - X;
-                    break;
-                case DIRECTION_RIGHT: //right
-                case DIRECTION_LEFT: //left
-                    point1.y -= Y;
-                    point2.y += peerDeviceHeight - Y;
-                    break;
-                default:
-                    break;
-            }
+    int sum = direction + peerDeviceDirection;
+    int minus = direction - peerDeviceDirection;
+    
+    if (minus == 0) {
+        angle = M_PI;
+    }
+    else{
+        if (sum == 0) {
+            angle = 0.0f;
         }
         else
         {
-            switch (peerDeviceDirection) {
-                case DIRECTION_UP: //up
-                case DIRECTION_DOWN: // down
-                    point1.x -= X;
-                    point2.x += peerDeviceWidth - X;
-                    break;
-                case DIRECTION_RIGHT: //right
-                case DIRECTION_LEFT: //left
-                    point1.x -= Y;
-                    point2.x += peerDeviceHeight - Y;
-                    break;
-                default:
-                    break;
-            }
-            
+            if ((sum == 3 && minus == -1) || (sum == -3 && minus == 1) || (sum == 1 && minus == 3) || (sum == -1 && minus == -3))
+                angle = M_PI_2;
         }
-        
-        //point1View.frame = CGRectMake(point1.x, point1.y, 10, 10);
-        //point2View.frame = CGRectMake(point2.x, point2.y, 10, 10);
     }
+    
+    float x = endPoint.x - peerEndPoint.x*cos(angle) + peerEndPoint.y*sin(angle);
+    float y = endPoint.y - peerEndPoint.y*cos(angle) - peerEndPoint.x*sin(angle);
+        
+    NSLog(@"angle: %f   translate: %f %f", angle, x, y);
+    
+    GLKMatrix4 convertMatrix = GLKMatrix4Identity;
+    convertMatrix = GLKMatrix4Translate(convertMatrix, x, y, 0.0f);
+    convertMatrix = GLKMatrix4Rotate(convertMatrix, angle, 0.0f, 0.0f, 1.0f);
+    
+    NSLog(@"ConvertMatrix:");
+    NSLog(@"    %f %f %f %f",convertMatrix.m00,convertMatrix.m01,convertMatrix.m02,convertMatrix.m03);
+    NSLog(@"    %f %f %f %f",convertMatrix.m10,convertMatrix.m11,convertMatrix.m12,convertMatrix.m13);
+    NSLog(@"    %f %f %f %f",convertMatrix.m20,convertMatrix.m21,convertMatrix.m22,convertMatrix.m23);
+    NSLog(@"    %f %f %f %f",convertMatrix.m30,convertMatrix.m31,convertMatrix.m32,convertMatrix.m33);
+    
+    GLKVector3 result = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, GLKVector3Make(0.0f, 0.0f, 0.0f));
+    NSLog(@"RESULT: %f %f %f", result.x, result.y, result.z);
+    
+    //    int peerDeviceWidth;
+//    int peerDeviceHeight;
+//    int X;
+//    int Y;
+//    
+//    float ratio;
+//    
+//    if (peerDeviceType == 3) {   //ipad
+//        ratio = 163.0/132.0;
+//        peerDeviceWidth = (int)(768.0*ratio);
+//        peerDeviceHeight = (int)(1004.0*ratio);
+//    }
+//    else
+//    {
+//        ratio = 132.0/163.0;
+//        peerDeviceWidth = (int)(320.0*ratio);
+//        peerDeviceHeight = (int)(460.0*ratio);
+//    }
+//    
+//    X = (int)(peerEndPoint.x*ratio);
+//    Y = (int)(peerEndPoint.y*ratio);
+//    
+//    // draw on myself
+//    if (DEVICE_TYPE == DEVICE_TYPE_IPHONE3GS) {          //iphone
+//        
+//        switch (direction) {
+//            case DIRECTION_UP: // up
+//                //point1View.frame = CGRectMake(0, 0, 320, 10);
+//                break;
+//            case DIRECTION_RIGHT: // right
+//                //point1View.frame = CGRectMake(310, 0, 10, 480);
+//                break;
+//            case DIRECTION_DOWN: // down
+//                //point1View.frame = CGRectMake(0, 450, 320, 10);
+//                break;
+//            case DIRECTION_LEFT: // left
+//                //point1View.frame = CGRectMake(0, 0, 10, 480);
+//                break;
+//            default:
+//                break;
+//        }
+//    } else if (DEVICE_TYPE == DEVICE_TYPE_IPADMINI)     //ipad
+//    {
+//        point1 = CGPointMake(endPoint.x, endPoint.y);
+//        point2 = CGPointMake(endPoint.x, endPoint.y);
+//        
+//        switch (direction) {
+//            case DIRECTION_UP:  //up
+//                point1.y = point2.y = 0;
+//                break;
+//            case DIRECTION_RIGHT:  //right
+//                point1.x = point2.x = DEVICE_WIDTH;
+//                break;
+//            case DIRECTION_DOWN:  //down
+//                point1.y = point2.y = DEVICE_HEIGHT;
+//                break;
+//            case DIRECTION_LEFT: //left
+//                point1.x = point2.x = 0;
+//                break;
+//            default:
+//                break;
+//        }
+//        if (direction == DIRECTION_RIGHT || direction == DIRECTION_LEFT) {
+//            switch (peerDeviceDirection) {
+//                case DIRECTION_UP: //up
+//                case DIRECTION_DOWN: // down
+//                    point1.y -= X;
+//                    point2.y += peerDeviceWidth - X;
+//                    break;
+//                case DIRECTION_RIGHT: //right
+//                case DIRECTION_LEFT: //left
+//                    point1.y -= Y;
+//                    point2.y += peerDeviceHeight - Y;
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//        else
+//        {
+//            switch (peerDeviceDirection) {
+//                case DIRECTION_UP: //up
+//                case DIRECTION_DOWN: // down
+//                    point1.x -= X;
+//                    point2.x += peerDeviceWidth - X;
+//                    break;
+//                case DIRECTION_RIGHT: //right
+//                case DIRECTION_LEFT: //left
+//                    point1.x -= Y;
+//                    point2.x += peerDeviceHeight - Y;
+//                    break;
+//                default:
+//                    break;
+//            }
+//            
+//        }
+//        
+//        //point1View.frame = CGRectMake(point1.x, point1.y, 10, 10);
+//        //point2View.frame = CGRectMake(point2.x, point2.y, 10, 10);
+//    }
 
+}
+
+- (GLKVector3) convertCoordinationTo3D:(CGPoint)point
+{
+    float x = (point.x - DEVICE_WIDTH/2)*DEVICE_RATIO;
+    float y = -(point.y - DEVICE_HEIGHT/2)*DEVICE_RATIO;
+    GLKVector3 coord = GLKVector3Make(x, y, 0.0f);
+    return coord;
 }
 
 
