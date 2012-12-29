@@ -38,6 +38,10 @@
 		DC19877316785A96006C138A /* GSAbout.m in Sources */ = {isa = PBXBuildFile; fileRef = DC19876F16785A96006C138A /* GSAbout.m */; };
 		DC19877416785A96006C138A /* GSESPlayGame.m in Sources */ = {isa = PBXBuildFile; fileRef = DC19877116785A96006C138A /* GSESPlayGame.m */; };
 		DC19877616785AC0006C138A /* GSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DC19877516785AC0006C138A /* GSSettings.m */; };
+		DC35E8D6168EDAA4003ABD3F /* logo-ipad-7272.png in Resources */ = {isa = PBXBuildFile; fileRef = DC35E8D5168EDAA4003ABD3F /* logo-ipad-7272.png */; };
+		DC35E8D8168EDAC5003ABD3F /* logo-ipad-retina.png in Resources */ = {isa = PBXBuildFile; fileRef = DC35E8D7168EDAC5003ABD3F /* logo-ipad-retina.png */; };
+		DC35E8DA168EDAF8003ABD3F /* logo-iphone-5757.png in Resources */ = {isa = PBXBuildFile; fileRef = DC35E8D9168EDAF8003ABD3F /* logo-iphone-5757.png */; };
+		DC35E8DC168EDB26003ABD3F /* logo-iphone-retina.png in Resources */ = {isa = PBXBuildFile; fileRef = DC35E8DB168EDB26003ABD3F /* logo-iphone-retina.png */; };
 		DC5F9D5D167B907A00581926 /* Barrier.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5F9D5C167B907A00581926 /* Barrier.m */; };
 		DC9BE4AB168EA60D008668B3 /* Cube.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AA168EA60D008668B3 /* Cube.m */; };
 		DC9BE4B0168EB518008668B3 /* MyLine.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AF168EB518008668B3 /* MyLine.m */; };
@@ -106,6 +110,10 @@
 		DC19877116785A96006C138A /* GSESPlayGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSESPlayGame.m; sourceTree = "<group>"; };
 		DC19877216785A96006C138A /* GSSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSettings.h; sourceTree = "<group>"; };
 		DC19877516785AC0006C138A /* GSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSettings.m; sourceTree = "<group>"; };
+		DC35E8D5168EDAA4003ABD3F /* logo-ipad-7272.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-ipad-7272.png"; sourceTree = "<group>"; };
+		DC35E8D7168EDAC5003ABD3F /* logo-ipad-retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-ipad-retina.png"; sourceTree = "<group>"; };
+		DC35E8D9168EDAF8003ABD3F /* logo-iphone-5757.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-iphone-5757.png"; sourceTree = "<group>"; };
+		DC35E8DB168EDB26003ABD3F /* logo-iphone-retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-iphone-retina.png"; sourceTree = "<group>"; };
 		DC5F9D5B167B907A00581926 /* Barrier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Barrier.h; sourceTree = "<group>"; };
 		DC5F9D5C167B907A00581926 /* Barrier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Barrier.m; sourceTree = "<group>"; };
 		DC9BE4A9168EA60D008668B3 /* Cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cube.h; sourceTree = "<group>"; };
@@ -162,6 +170,10 @@
 		DC19870216785476006C138A = {
 			isa = PBXGroup;
 			children = (
+				DC35E8DB168EDB26003ABD3F /* logo-iphone-retina.png */,
+				DC35E8D9168EDAF8003ABD3F /* logo-iphone-5757.png */,
+				DC35E8D7168EDAC5003ABD3F /* logo-ipad-retina.png */,
+				DC35E8D5168EDAA4003ABD3F /* logo-ipad-7272.png */,
 				DC19871716785476006C138A /* iBall */,
 				DC19873E16785476006C138A /* iBallTests */,
 				DC19871016785476006C138A /* Frameworks */,
@@ -406,6 +418,10 @@
 				DC19872E16785476006C138A /* MainStoryboard_iPad.storyboard in Resources */,
 				DCD239D2167A1F7B00D74D7C /* bia.jpeg in Resources */,
 				DCD239D3167A1F7B00D74D7C /* bia2.jpeg in Resources */,
+				DC35E8D6168EDAA4003ABD3F /* logo-ipad-7272.png in Resources */,
+				DC35E8D8168EDAC5003ABD3F /* logo-ipad-retina.png in Resources */,
+				DC35E8DA168EDAF8003ABD3F /* logo-iphone-5757.png in Resources */,
+				DC35E8DC168EDB26003ABD3F /* logo-iphone-retina.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
