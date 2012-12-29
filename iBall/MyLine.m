@@ -19,12 +19,17 @@ float lineNormals[] = {
     0.0f, 0.0f, 1.0f,
 };
 
+float lineColors[] = {
+    1.0f, 1.0f, 0.0f, 1.0f,
+    1.0f, 1.0f, 0.0f, 1.0f,
+};
+
 @implementation MyLine
 
 static BOOL initialized = NO;
 static AGLKVertexAttribArrayBuffer* vertexPositionBuffer;
 static AGLKVertexAttribArrayBuffer* vertexNormalBuffer;
-static AGLKVertexAttribArrayBuffer* vertexTextureCoordBuffer;
+static AGLKVertexAttribArrayBuffer * vertexColorBuffer;
 
 + (void)initialize
 {
@@ -44,11 +49,11 @@ static AGLKVertexAttribArrayBuffer* vertexTextureCoordBuffer;
 //                                      numberOfVertices:sizeof(lineNormals) / (3 * sizeof(GLfloat))
 //                                      bytes:lineNormals
 //                                      usage:GL_STATIC_DRAW];
-        //        vertexTextureCoordBuffer = [[AGLKVertexAttribArrayBuffer alloc]
-        //                                    initWithAttribStride:(2 * sizeof(GLfloat))
-        //                                    numberOfVertices:sizeof(sphereTexCoords) / (2 * sizeof(GLfloat))
-        //                                    bytes:sphereTexCoords
-        //                                    usage:GL_STATIC_DRAW];
+        vertexColorBuffer = [[AGLKVertexAttribArrayBuffer alloc]
+                                    initWithAttribStride:(4 * sizeof(GLfloat))
+                                    numberOfVertices:sizeof(lineColors) / (4 * sizeof(GLfloat))
+                                    bytes:lineColors
+                                    usage:GL_STATIC_DRAW];
     }
 }
 
@@ -65,11 +70,12 @@ static AGLKVertexAttribArrayBuffer* vertexTextureCoordBuffer;
 //         numberOfCoordinates:3
 //         attribOffset:0
 //         shouldEnable:YES];
-    //    [vertexTextureCoordBuffer
-    //     prepareToDrawWithAttrib:GLKVertexAttribTexCoord0
-    //     numberOfCoordinates:2
-    //     attribOffset:0
-    //     shouldEnable:YES];
+    
+    [vertexColorBuffer
+     prepareToDrawWithAttrib:GLKVertexAttribColor
+     numberOfCoordinates:4
+     attribOffset:0
+     shouldEnable:YES];
 }
 
 + (void)destroyBuffer
@@ -78,7 +84,7 @@ static AGLKVertexAttribArrayBuffer* vertexTextureCoordBuffer;
     // Delete buffers that aren't needed when view is unloaded
     vertexPositionBuffer = nil;
     vertexNormalBuffer = nil;
-    vertexTextureCoordBuffer = nil;
+    vertexColorBuffer = nil;
 }
 
 - (id)initWithStartEndPoint:(GLKVector3)pStartPoint andEndPoint:(GLKVector3)pEndPoint
@@ -113,6 +119,7 @@ static AGLKVertexAttribArrayBuffer* vertexTextureCoordBuffer;
     modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, GLKVector3Length(line), 1, 1);
     
     effect.transform.modelviewMatrix = modelViewMatrix;
+    effect.light0.enabled = GL_FALSE;
     
     [effect prepareToDraw];
     
@@ -122,6 +129,7 @@ static AGLKVertexAttribArrayBuffer* vertexTextureCoordBuffer;
     glLineWidth(GLES_LINE_WIDTH);
     
     [AGLKVertexAttribArrayBuffer drawPreparedArraysWithMode:GL_LINES startVertexIndex:0 numberOfVertices:2];
+    effect.light0.enabled = GL_TRUE;
 }
 
 @end

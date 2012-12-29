@@ -97,7 +97,7 @@ stride;
                    attribOffset:(GLsizeiptr)offset
                    shouldEnable:(BOOL)shouldEnable
 {
-    NSParameterAssert((0 < count) && (count < 4));
+    NSParameterAssert((0 < count) && (count < 5));
     NSParameterAssert(offset < self.stride);
     NSAssert(0 != name, @"Invalid name");
     
