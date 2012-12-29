@@ -288,15 +288,19 @@
 {
     switch (swipe.direction) {
         case UISwipeGestureRecognizerDirectionLeft:
+            endPoint.x = 0;
             [gCommunicationManager sendCalibrationData:endPoint andDirection:DIRECTION_LEFT];
             break;
         case UISwipeGestureRecognizerDirectionRight:
+            endPoint.x = gCommunicationManager.DEVICE_WIDTH;
             [gCommunicationManager sendCalibrationData:endPoint andDirection:DIRECTION_RIGHT];
             break;
         case UISwipeGestureRecognizerDirectionUp:
+            endPoint.y = 0;
             [gCommunicationManager sendCalibrationData:endPoint andDirection:DIRECTION_UP];
             break;
         case UISwipeGestureRecognizerDirectionDown:
+            endPoint.y = gCommunicationManager.DEVICE_HEIGHT;
             [gCommunicationManager sendCalibrationData:endPoint andDirection:DIRECTION_DOWN];
             break;
         default:
