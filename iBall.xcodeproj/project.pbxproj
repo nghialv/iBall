@@ -39,6 +39,8 @@
 		DC19877416785A96006C138A /* GSESPlayGame.m in Sources */ = {isa = PBXBuildFile; fileRef = DC19877116785A96006C138A /* GSESPlayGame.m */; };
 		DC19877616785AC0006C138A /* GSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DC19877516785AC0006C138A /* GSSettings.m */; };
 		DC5F9D5D167B907A00581926 /* Barrier.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5F9D5C167B907A00581926 /* Barrier.m */; };
+		DC9BE4AB168EA60D008668B3 /* Cube.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AA168EA60D008668B3 /* Cube.m */; };
+		DC9BE4B0168EB518008668B3 /* MyLine.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AF168EB518008668B3 /* MyLine.m */; };
 		DCCA119416787B4B001BE733 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCA119316787B4B001BE733 /* CommunicationManager.m */; };
 		DCD239CD167A1E5700D74D7C /* AGLKVertexAttribArrayBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD239CC167A1E5700D74D7C /* AGLKVertexAttribArrayBuffer.m */; };
 		DCD239D2167A1F7B00D74D7C /* bia.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = DCD239D0167A1F7B00D74D7C /* bia.jpeg */; };
@@ -106,6 +108,11 @@
 		DC19877516785AC0006C138A /* GSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSettings.m; sourceTree = "<group>"; };
 		DC5F9D5B167B907A00581926 /* Barrier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Barrier.h; sourceTree = "<group>"; };
 		DC5F9D5C167B907A00581926 /* Barrier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Barrier.m; sourceTree = "<group>"; };
+		DC9BE4A9168EA60D008668B3 /* Cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cube.h; sourceTree = "<group>"; };
+		DC9BE4AA168EA60D008668B3 /* Cube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cube.m; sourceTree = "<group>"; };
+		DC9BE4AD168EA701008668B3 /* cubeData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cubeData.h; sourceTree = "<group>"; };
+		DC9BE4AE168EB518008668B3 /* MyLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLine.h; sourceTree = "<group>"; };
+		DC9BE4AF168EB518008668B3 /* MyLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLine.m; sourceTree = "<group>"; };
 		DCCA118416786B91001BE733 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		DCCA119216787B4B001BE733 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
 		DCCA119316787B4B001BE733 /* CommunicationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunicationManager.m; sourceTree = "<group>"; };
@@ -308,9 +315,14 @@
 				DCF92C711678DB42005DA7FA /* Entity.m */,
 				DCF92C6D1678DAED005DA7FA /* Ball.h */,
 				DCF92C6E1678DAED005DA7FA /* Ball.m */,
+				DC9BE4A9168EA60D008668B3 /* Cube.h */,
+				DC9BE4AA168EA60D008668B3 /* Cube.m */,
 				DC5F9D5B167B907A00581926 /* Barrier.h */,
 				DC5F9D5C167B907A00581926 /* Barrier.m */,
+				DC9BE4AE168EB518008668B3 /* MyLine.h */,
+				DC9BE4AF168EB518008668B3 /* MyLine.m */,
 				DCD239CF167A1EC200D74D7C /* sphere.h */,
+				DC9BE4AD168EA701008668B3 /* cubeData.h */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -445,6 +457,8 @@
 				DCF92C721678DB42005DA7FA /* Entity.m in Sources */,
 				DCD239CD167A1E5700D74D7C /* AGLKVertexAttribArrayBuffer.m in Sources */,
 				DC5F9D5D167B907A00581926 /* Barrier.m in Sources */,
+				DC9BE4AB168EA60D008668B3 /* Cube.m in Sources */,
+				DC9BE4B0168EB518008668B3 /* MyLine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

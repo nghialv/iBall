@@ -9,6 +9,8 @@
 #import "GLESGameState3D.h"
 #import "CommunicationManager.h"
 #import "Ball.h"
+#import "Cube.h"
+#import "MyLine.h"
 
 @interface GSESPlayGame : GLESGameState3D <CommunicationManagerDelegate, UIGestureRecognizerDelegate>
 {
@@ -21,6 +23,9 @@
     
     // for position, direction matrix
     CGPoint endPoint;
+    
+    Cube *cube;
+    MyLine *line;
 }
 
 - (void)setupGL;

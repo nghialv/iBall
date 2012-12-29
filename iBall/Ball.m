@@ -9,9 +9,16 @@
 #import "Ball.h"
 #import "sphere.h"
 
+
 @implementation Ball
 
+@synthesize textureIndex;
+
 static BOOL initialized = NO;
+static AGLKVertexAttribArrayBuffer* ballVertexPositionBuffer;
+static AGLKVertexAttribArrayBuffer* ballVertexNormalBuffer;
+static AGLKVertexAttribArrayBuffer* ballVertexTextureCoordBuffer;
+static NSMutableArray* ballTextureInforArray;
 
 + (void)initialize
 {
@@ -21,39 +28,39 @@ static BOOL initialized = NO;
         NSLog(@"INITIALIZE BALL: YES");
         
         // Create vertex buffers containing vertices to draw
-        vertexPositionBuffer = [[AGLKVertexAttribArrayBuffer alloc]
+        ballVertexPositionBuffer = [[AGLKVertexAttribArrayBuffer alloc]
                                 initWithAttribStride:(3 * sizeof(GLfloat))
                                 numberOfVertices:sizeof(sphereVerts) / (3 * sizeof(GLfloat))
                                 bytes:sphereVerts
                                 usage:GL_STATIC_DRAW];
-        vertexNormalBuffer = [[AGLKVertexAttribArrayBuffer alloc]
+        ballVertexNormalBuffer = [[AGLKVertexAttribArrayBuffer alloc]
                               initWithAttribStride:(3 * sizeof(GLfloat))
                               numberOfVertices:sizeof(sphereNormals) / (3 * sizeof(GLfloat))
                               bytes:sphereNormals
                               usage:GL_STATIC_DRAW];
-        vertexTextureCoordBuffer = [[AGLKVertexAttribArrayBuffer alloc]
+        ballVertexTextureCoordBuffer = [[AGLKVertexAttribArrayBuffer alloc]
                                     initWithAttribStride:(2 * sizeof(GLfloat))
                                     numberOfVertices:sizeof(sphereTexCoords) / (2 * sizeof(GLfloat))
                                     bytes:sphereTexCoords
                                     usage:GL_STATIC_DRAW];
         
-        textureInforArray = [[NSMutableArray alloc] init];
+        ballTextureInforArray = [[NSMutableArray alloc] init];
     }
 }
 
 + (void)enableBuffer
 {
-    [vertexPositionBuffer
+    [ballVertexPositionBuffer
      prepareToDrawWithAttrib:GLKVertexAttribPosition
      numberOfCoordinates:3
      attribOffset:0
      shouldEnable:YES];
-    [vertexNormalBuffer
+    [ballVertexNormalBuffer
      prepareToDrawWithAttrib:GLKVertexAttribNormal
      numberOfCoordinates:3
      attribOffset:0
      shouldEnable:YES];
-    [vertexTextureCoordBuffer
+    [ballVertexTextureCoordBuffer
      prepareToDrawWithAttrib:GLKVertexAttribTexCoord0
      numberOfCoordinates:2
      attribOffset:0
@@ -64,11 +71,11 @@ static BOOL initialized = NO;
 {
     initialized = NO;
     // Delete buffers that aren't needed when view is unloaded
-    vertexPositionBuffer = nil;
-    vertexNormalBuffer = nil;
-    vertexTextureCoordBuffer = nil;
-    [textureInforArray removeAllObjects];
-    textureInforArray = nil;
+    ballVertexPositionBuffer = nil;
+    ballVertexNormalBuffer = nil;
+    ballVertexTextureCoordBuffer = nil;
+    [ballTextureInforArray removeAllObjects];
+    ballTextureInforArray = nil;
 }
 
 + (void)addTexture:(NSString *)imagefile
@@ -81,7 +88,7 @@ static BOOL initialized = NO;
                             [NSNumber numberWithBool:YES],
                             GLKTextureLoaderOriginBottomLeft, nil]
                    error:NULL];
-    [textureInforArray addObject:texInfo];
+    [ballTextureInforArray addObject:texInfo];
 }
 
 - (id)initWithPosVelRadiTex:(GLKVector3)pos andVel:(GLKVector3)vel andRadius:(float)radius andTex:(int)texIndex
@@ -93,7 +100,7 @@ static BOOL initialized = NO;
         scale = GLKVector3Make(radius*2, radius*2, radius*2);
         angle = 0;
         if (texIndex > 0)
-            textureIndex = texIndex % [textureInforArray count];
+            textureIndex = texIndex % [ballTextureInforArray count];
         else
             textureIndex = 0;
     }
@@ -120,7 +127,7 @@ static BOOL initialized = NO;
 
 - (void)draw:(GLKBaseEffect *)effect
 {
-    GLKTextureInfo *tex = [textureInforArray objectAtIndex:textureIndex];
+    GLKTextureInfo *tex = [ballTextureInforArray objectAtIndex:textureIndex];
     effect.texture2d0.name = tex.name;
     effect.texture2d0.target = tex.target;
     

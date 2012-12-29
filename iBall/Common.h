@@ -29,7 +29,8 @@
 #define DIRECTION_UP 3
 #define DIRECTION_DOWN 4
 
-#define BALL_RADIUS 40.0
+#define BALL_RADIUS 25.0
+#define GLES_LINE_WIDTH 16.0
 
 typedef struct _PeerInfor
 {

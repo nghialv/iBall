@@ -10,11 +10,6 @@
 #import "AGLKVertexAttribArrayBuffer.h"
 #import "Entity.h"
 
-AGLKVertexAttribArrayBuffer* vertexPositionBuffer;
-AGLKVertexAttribArrayBuffer* vertexNormalBuffer;
-AGLKVertexAttribArrayBuffer* vertexTextureCoordBuffer;
-NSMutableArray* textureInforArray;
-
 @interface Ball : Entity{
     float angle;
     GLKVector3 rotationAxis;

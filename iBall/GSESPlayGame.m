@@ -41,6 +41,8 @@
    
     
     [Ball destroyBuffer];
+    [Cube destroyBuffer];
+    [MyLine destroyBuffer];
     [gCommunicationManager setDelegate:nil];
 }
 
@@ -125,7 +127,6 @@
     GLKMatrix4 projectionMatrix = GLKMatrix4MakeOrtho(-SPACE_WIDTH/2, SPACE_WIDTH/2, -SPACE_HEIGHT/2, SPACE_HEIGHT/2, 1000000, -1);
     self.effect.transform.projectionMatrix = projectionMatrix;
     
-    
     // Ball initilization
     [Ball initialize];
     
@@ -157,6 +158,13 @@
     //
     //    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
     //    [ballArray addObject:ball3];
+    
+    
+    [Cube initialize];
+    cube = [[Cube alloc] initWithPos:GLKVector3Make(0, 0, 0)];
+    
+    [MyLine initialize];
+    line = [[MyLine alloc] initWithStartEndPoint:GLKVector3Make(-100.0, SPACE_HEIGHT/2.0, 0) andEndPoint:GLKVector3Make(-100.0, -SPACE_HEIGHT/2.0, 0)];
 }
 
 - (void)tearDownGL
@@ -233,8 +241,8 @@
     glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_BLEND);
     
     
     [Ball enableBuffer];
@@ -242,6 +250,12 @@
     for (Ball *b in ballArray) {
         [b draw:self.effect];
     }
+    
+    [Cube enableBuffer];
+    [cube draw:self.effect];
+    
+    [MyLine enableBuffer];
+    [line draw:self.effect];
     
     glEnable(GL_DEPTH_TEST);
 }
