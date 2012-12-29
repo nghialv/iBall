@@ -227,8 +227,51 @@ CommunicationManager *gCommunicationManager;
     NSLog(@"    %f %f %f %f",convertMatrix.m20,convertMatrix.m21,convertMatrix.m22,convertMatrix.m23);
     NSLog(@"    %f %f %f %f",convertMatrix.m30,convertMatrix.m31,convertMatrix.m32,convertMatrix.m33);
     
-    GLKVector3 result = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, GLKVector3Make(0.0f, 0.0f, 0.0f));
-    NSLog(@"RESULT: %f %f %f", result.x, result.y, result.z);
+//    GLKVector3 result = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, GLKVector3Make(0.0f, 0.0f, 0.0f));
+//    NSLog(@"RESULT: %f %f %f", result.x, result.y, result.z);
+    
+    
+    GLKVector3 sP = peerEndPoint;
+    GLKVector3 eP = peerEndPoint;
+    
+    if (peerDeviceDirection == DIRECTION_LEFT || peerDeviceDirection == DIRECTION_RIGHT) {
+        sP.y = DEVICES_HEIGHT[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
+        eP.y = -sP.y;
+    }else
+    {
+        sP.x = DEVICES_WIDTH[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
+        eP.x = -sP.x;
+    }
+    
+    GLKVector3 sPoint = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, sP);
+    GLKVector3 ePoint = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, eP);
+    
+    if (direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT) {
+        if (sPoint.y < -DEVICE_HEIGHT*DEVICE_RATIO/2)
+            sPoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2;
+        if (ePoint.y < -DEVICE_HEIGHT*DEVICE_RATIO/2)
+            ePoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2;
+        if (sPoint.y > DEVICE_HEIGHT*DEVICE_RATIO/2)
+            sPoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2;
+        if (ePoint.y > DEVICE_HEIGHT*DEVICE_RATIO/2)
+            ePoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2;
+    }
+    else
+    {
+        if (sPoint.x < -DEVICE_WIDTH*DEVICE_RATIO/2)
+            sPoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2;
+        if (ePoint.x < -DEVICE_WIDTH*DEVICE_RATIO/2)
+            ePoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2;
+        if (sPoint.x > DEVICE_WIDTH*DEVICE_RATIO/2)
+            sPoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
+        if (ePoint.x > DEVICE_WIDTH*DEVICE_RATIO/2)
+            ePoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
+    }
+    
+    if (delegate) {
+        [delegate drawConnectionLine:sPoint andEndPoint:ePoint];
+    }
+    
     
     //    int peerDeviceWidth;
 //    int peerDeviceHeight;

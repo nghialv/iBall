@@ -89,6 +89,11 @@
     [ballArray addObject:ball2];
 }
 
+- (void) drawConnectionLine:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint
+{
+    [line changeStartEndPoint:sPoint andEndPoint:ePoint];
+}
+
 #pragma mark - GLESGameState3D
 - (void)configureLight
 {

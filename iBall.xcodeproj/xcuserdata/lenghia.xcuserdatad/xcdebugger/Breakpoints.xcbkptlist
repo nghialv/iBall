@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBall/CommunicationManager.h"
-         timestampString = "377016486.294099"
+         timestampString = "378483414.743018"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "33"
-         endingLineNumber = "33"
+         startingLineNumber = "34"
+         endingLineNumber = "34"
          landmarkName = "@interface CommunicationManager"
          landmarkType = "2">
       </FileBreakpoint>

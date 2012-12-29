@@ -15,6 +15,7 @@
 
 @protocol CommunicationManagerDelegate <NSObject>
     - (void)connectionStatusChanged;
+    - (void)drawConnectionLine:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint;
 
     - (void)receiveGameStart;
     - (void)receiveCalibrationData;
