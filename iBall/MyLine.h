@@ -15,6 +15,8 @@
     GLKVector3 endPoint;
 }
 
+@property (readonly) GLKVector3 startPoint;
+@property (readonly) GLKVector3 endPoint;
 
 + (void)enableBuffer;
 + (void)destroyBuffer;

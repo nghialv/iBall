@@ -26,6 +26,8 @@ float lineColors[] = {
 
 @implementation MyLine
 
+@synthesize startPoint, endPoint;
+
 static BOOL initialized = NO;
 static AGLKVertexAttribArrayBuffer* vertexPositionBuffer;
 static AGLKVertexAttribArrayBuffer* vertexNormalBuffer;

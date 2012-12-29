@@ -37,13 +37,4 @@ static float DEVICES_WIDTH[] = {320, 768, 640, 640, 640, 768, 1536};
 static float DEVICES_HEIGHT[] = {480, 1024, 960, 960, 1136, 1024, 2048};
 static float DEVICES_RATIO[] = {RATIO_K/163.0, RATIO_K/163.0, RATIO_K/326.0, RATIO_K/326.0, RATIO_K/326.0, RATIO_K/132.0, RATIO_K/264.0};
 
-typedef struct _PeerInfor
-{
-    __unsafe_unretained NSString *peerID;
-    GLKMatrix4  transformMatrix;
-    CGPoint connectPoint1;
-    CGPoint connectPoint2;
-}PeerInfor;
-
-
 #endif

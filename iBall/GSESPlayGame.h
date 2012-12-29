@@ -12,6 +12,13 @@
 #import "Cube.h"
 #import "MyLine.h"
 
+typedef struct _PeerInfor
+{
+    __unsafe_unretained NSString *peerID;
+    GLKMatrix4  transformMatrix;
+    __unsafe_unretained MyLine *line;
+}PeerInfor;
+
 @interface GSESPlayGame : GLESGameState3D <CommunicationManagerDelegate, UIGestureRecognizerDelegate>
 {
     @private
@@ -21,6 +28,7 @@
     NSMutableArray *ballArray;
     NSMutableArray *willRemoveBallArray;
     
+    NSMutableArray *readyPeerArray;
     // for position, direction matrix
     CGPoint endPoint;
     

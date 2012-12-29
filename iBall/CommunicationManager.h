@@ -15,7 +15,7 @@
 
 @protocol CommunicationManagerDelegate <NSObject>
     - (void)connectionStatusChanged;
-    - (void)drawConnectionLine:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint;
+    - (void)drawConnectionLine:(NSString *)peerID andStartPoint:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint;
 
     - (void)receiveGameStart;
     - (void)receiveCalibrationData;
@@ -74,7 +74,7 @@ extern CommunicationManager *gCommunicationManager;
 - (void) sendCalibrationData:(CGPoint)pEndPoint andDirection:(int)pDirection;
 - (void) sendBallData:(GLKVector3) startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
 
-- (void) calculateTransitionMatrix:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(GLKVector3)peerEndPoint;
+- (void) calculateTransitionMatrix:(NSString *)peerId andPeerDeviceType:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(GLKVector3)peerEndPoint;
 
 - (GLKVector3) convertCoordinationTo3D:(CGPoint) point;
 

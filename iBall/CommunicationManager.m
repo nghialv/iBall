@@ -162,7 +162,7 @@ CommunicationManager *gCommunicationManager;
             peerEndPoint.x = [[params objectAtIndex:3] floatValue];
             peerEndPoint.y = [[params objectAtIndex:4] floatValue];
             
-            [self calculateTransitionMatrix:peerDeviceType andDeviceDirection:peerDeviceDirection andPeerEndpoint:peerEndPoint];
+            [self calculateTransitionMatrix:peer andPeerDeviceType:peerDeviceType andDeviceDirection:peerDeviceDirection andPeerEndpoint:peerEndPoint];
         }
         else if (mesgType == MESG_TYPE_GAME_START)
         {
@@ -191,7 +191,7 @@ CommunicationManager *gCommunicationManager;
 }
 
 #pragma mark - Calculate Transition Matrix
--(void) calculateTransitionMatrix:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(GLKVector3)peerEndPoint
+-(void) calculateTransitionMatrix:(NSString *)peerId andPeerDeviceType:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(GLKVector3)peerEndPoint
 {
     float angle = -M_PI_2;
         
@@ -281,7 +281,7 @@ CommunicationManager *gCommunicationManager;
     }
     
     if (delegate) {
-        [delegate drawConnectionLine:sPoint andEndPoint:ePoint];
+        [delegate drawConnectionLine:peerId andStartPoint:sPoint andEndPoint:ePoint];
     }
 }
 

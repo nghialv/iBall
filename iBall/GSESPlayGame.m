@@ -39,6 +39,15 @@
     [ballArray removeAllObjects];
     ballArray = nil;
    
+    if (willRemoveBallArray) {
+        [willRemoveBallArray removeAllObjects];
+        willRemoveBallArray = nil;
+    }
+    
+    if (readyPeerArray) {
+        [readyPeerArray removeAllObjects];
+        readyPeerArray = nil;
+    }
     
     [Ball destroyBuffer];
     [Cube destroyBuffer];
@@ -89,7 +98,7 @@
     [ballArray addObject:ball2];
 }
 
-- (void) drawConnectionLine:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint
+- (void) drawConnectionLine:(NSString *)peerID andStartPoint:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint
 {
     [line changeStartEndPoint:sPoint andEndPoint:ePoint];
 }
@@ -142,6 +151,7 @@
     
     ballArray = [[NSMutableArray alloc] init];
     willRemoveBallArray = [[NSMutableArray alloc] init];
+    readyPeerArray = [[NSMutableArray alloc] init];
     
     GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
     GLKVector3 vel = GLKVector3Make(2.5, 4.0, 0.0);
