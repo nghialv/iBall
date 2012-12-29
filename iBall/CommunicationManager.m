@@ -234,13 +234,29 @@ CommunicationManager *gCommunicationManager;
     GLKVector3 sP = peerEndPoint;
     GLKVector3 eP = peerEndPoint;
     
-    if (peerDeviceDirection == DIRECTION_LEFT || peerDeviceDirection == DIRECTION_RIGHT) {
-        sP.y = DEVICES_HEIGHT[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
-        eP.y = -sP.y;
-    }else
-    {
-        sP.x = DEVICES_WIDTH[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
-        eP.x = -sP.x;
+    switch (peerDeviceDirection) {
+        case DIRECTION_LEFT:
+            sP.x = eP.x = peerEndPoint.x - 2.5f;
+            sP.y = DEVICES_HEIGHT[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
+            eP.y = -sP.y;
+            break;
+        case DIRECTION_RIGHT:
+            sP.x = eP.x = peerEndPoint.x + 2.5f;
+            sP.y = DEVICES_HEIGHT[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
+            eP.y = -sP.y;
+            break;
+        case DIRECTION_UP:
+            sP.y = eP.y = peerEndPoint.y + 2.5f;
+            sP.x = DEVICES_WIDTH[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
+            eP.x = -sP.x;
+            break;
+        case DIRECTION_DOWN:
+            sP.y = eP.y = peerEndPoint.y - 2.5f;
+            sP.x = DEVICES_WIDTH[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
+            eP.x = -sP.x;
+            break;
+        default:
+            break;
     }
     
     GLKVector3 sPoint = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, sP);
@@ -248,24 +264,24 @@ CommunicationManager *gCommunicationManager;
     
     if (direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT) {
         if (sPoint.y < -DEVICE_HEIGHT*DEVICE_RATIO/2)
-            sPoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2;
+            sPoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2 + 20.0f;
         if (ePoint.y < -DEVICE_HEIGHT*DEVICE_RATIO/2)
-            ePoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2;
+            ePoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2 + 20.0f;
         if (sPoint.y > DEVICE_HEIGHT*DEVICE_RATIO/2)
-            sPoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2;
+            sPoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2 - 20.0f;
         if (ePoint.y > DEVICE_HEIGHT*DEVICE_RATIO/2)
-            ePoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2;
+            ePoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2 - 20.0f;
     }
     else
     {
         if (sPoint.x < -DEVICE_WIDTH*DEVICE_RATIO/2)
-            sPoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2;
+            sPoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2 + 20.0f;
         if (ePoint.x < -DEVICE_WIDTH*DEVICE_RATIO/2)
-            ePoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2;
+            ePoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2 + 20.0f;
         if (sPoint.x > DEVICE_WIDTH*DEVICE_RATIO/2)
-            sPoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
+            sPoint.x = DEVICE_WIDTH*DEVICE_RATIO/2 - 20.0f;
         if (ePoint.x > DEVICE_WIDTH*DEVICE_RATIO/2)
-            ePoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
+            ePoint.x = DEVICE_WIDTH*DEVICE_RATIO/2 - 20.0f;
     }
     
     if (delegate) {
