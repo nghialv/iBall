@@ -11,13 +11,7 @@
 #import "Ball.h"
 #import "Cube.h"
 #import "MyLine.h"
-
-typedef struct _PeerInfor
-{
-    __unsafe_unretained NSString *peerID;
-    GLKMatrix4  transformMatrix;
-    __unsafe_unretained MyLine *line;
-}PeerInfor;
+#import "PeerInfor.h"
 
 @interface GSESPlayGame : GLESGameState3D <CommunicationManagerDelegate, UIGestureRecognizerDelegate>
 {
@@ -33,7 +27,6 @@ typedef struct _PeerInfor
     CGPoint endPoint;
     
     Cube *cube;
-    MyLine *line;
 }
 
 - (void)setupGL;

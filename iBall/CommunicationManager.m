@@ -255,6 +255,8 @@ CommunicationManager *gCommunicationManager;
             break;
     }
     
+    NSLog(@"sP: %f %f %f", sP.x, sP.y, sP.z);
+    
     GLKVector3 sPoint = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, sP);
     GLKVector3 ePoint = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, eP);
     
@@ -280,8 +282,10 @@ CommunicationManager *gCommunicationManager;
             ePoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
     }
     
+    NSLog(@"sP: %f %f %f", sP.x, sP.y, sP.z);
+    
     if (delegate) {
-        [delegate drawConnectionLine:peerId andStartPoint:sPoint andEndPoint:ePoint];
+        [delegate drawConnectionLine:peerId andTransitionMatrix:convertMatrix andStartPoint:sPoint andEndPoint:ePoint];
     }
 }
 

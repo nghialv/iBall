@@ -98,9 +98,21 @@
     [ballArray addObject:ball2];
 }
 
-- (void) drawConnectionLine:(NSString *)peerID andStartPoint:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint
+- (void) drawConnectionLine:(NSString *)peerID andTransitionMatrix:(GLKMatrix4)matrix andStartPoint:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint
 {
-    [line changeStartEndPoint:sPoint andEndPoint:ePoint];
+    BOOL alreadyExit = false;
+    for (PeerInfor *p in readyPeerArray)
+    {
+        if ([p.peerId isEqualToString:peerID]) {
+            [p.line changeStartEndPoint:sPoint andEndPoint:ePoint];
+            alreadyExit = true;
+        }
+    }
+    
+    if (!alreadyExit) {
+        PeerInfor *newPeer = [[PeerInfor alloc] initWithAll:peerID andTransformMatrix:matrix andLineStartPoint:sPoint andLineEndPoint:ePoint];
+        [readyPeerArray addObject:newPeer];
+    }
 }
 
 #pragma mark - GLESGameState3D
@@ -179,7 +191,6 @@
     cube = [[Cube alloc] initWithPos:GLKVector3Make(0, 0, 0)];
     
     [MyLine initialize];
-    line = [[MyLine alloc] initWithStartEndPoint:GLKVector3Make(-(SPACE_WIDTH/2.0f-GLES_LINE_WIDTH/2.0f), SPACE_HEIGHT/2.0, 0) andEndPoint:GLKVector3Make(-(SPACE_WIDTH/2.0f-GLES_LINE_WIDTH/2.0f), -SPACE_HEIGHT/2.0, 0)];
 }
 
 - (void)tearDownGL
@@ -270,7 +281,10 @@
     [cube draw:self.effect];
     
     [MyLine enableBuffer];
-    [line draw:self.effect];
+    for (PeerInfor *p in readyPeerArray)
+    {
+        [p.line draw:self.effect];
+    }
     
     glEnable(GL_DEPTH_TEST);
 }
