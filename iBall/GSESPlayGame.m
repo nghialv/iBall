@@ -169,7 +169,7 @@
     cube = [[Cube alloc] initWithPos:GLKVector3Make(0, 0, 0)];
     
     [MyLine initialize];
-    line = [[MyLine alloc] initWithStartEndPoint:GLKVector3Make(-(SPACE_WIDTH/2.0f-2.5f), SPACE_HEIGHT/2.0, 0) andEndPoint:GLKVector3Make(-(SPACE_WIDTH/2.0f-2.5f), -SPACE_HEIGHT/2.0, 0)];
+    line = [[MyLine alloc] initWithStartEndPoint:GLKVector3Make(-(SPACE_WIDTH/2.0f-GLES_LINE_WIDTH/2.0f), SPACE_HEIGHT/2.0, 0) andEndPoint:GLKVector3Make(-(SPACE_WIDTH/2.0f-GLES_LINE_WIDTH/2.0f), -SPACE_HEIGHT/2.0, 0)];
 }
 
 - (void)tearDownGL

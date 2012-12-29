@@ -225,33 +225,29 @@ CommunicationManager *gCommunicationManager;
     NSLog(@"    %f %f %f %f",convertMatrix.m00,convertMatrix.m01,convertMatrix.m02,convertMatrix.m03);
     NSLog(@"    %f %f %f %f",convertMatrix.m10,convertMatrix.m11,convertMatrix.m12,convertMatrix.m13);
     NSLog(@"    %f %f %f %f",convertMatrix.m20,convertMatrix.m21,convertMatrix.m22,convertMatrix.m23);
-    NSLog(@"    %f %f %f %f",convertMatrix.m30,convertMatrix.m31,convertMatrix.m32,convertMatrix.m33);
-    
-//    GLKVector3 result = GLKMatrix4MultiplyVector3WithTranslation(convertMatrix, GLKVector3Make(0.0f, 0.0f, 0.0f));
-//    NSLog(@"RESULT: %f %f %f", result.x, result.y, result.z);
-    
+    NSLog(@"    %f %f %f %f",convertMatrix.m30,convertMatrix.m31,convertMatrix.m32,convertMatrix.m33);   
     
     GLKVector3 sP = peerEndPoint;
     GLKVector3 eP = peerEndPoint;
     
     switch (peerDeviceDirection) {
         case DIRECTION_LEFT:
-            sP.x = eP.x = peerEndPoint.x - 2.5f;
+            sP.x = eP.x = peerEndPoint.x - GLES_LINE_WIDTH/2.0f;
             sP.y = DEVICES_HEIGHT[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
             eP.y = -sP.y;
             break;
         case DIRECTION_RIGHT:
-            sP.x = eP.x = peerEndPoint.x + 2.5f;
+            sP.x = eP.x = peerEndPoint.x + GLES_LINE_WIDTH/2.0f;
             sP.y = DEVICES_HEIGHT[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
             eP.y = -sP.y;
             break;
         case DIRECTION_UP:
-            sP.y = eP.y = peerEndPoint.y + 2.5f;
+            sP.y = eP.y = peerEndPoint.y + GLES_LINE_WIDTH/2.0f;
             sP.x = DEVICES_WIDTH[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
             eP.x = -sP.x;
             break;
         case DIRECTION_DOWN:
-            sP.y = eP.y = peerEndPoint.y - 2.5f;
+            sP.y = eP.y = peerEndPoint.y - GLES_LINE_WIDTH/2.0f;
             sP.x = DEVICES_WIDTH[peerDeviceType]*DEVICES_RATIO[peerDeviceType]/2.0;
             eP.x = -sP.x;
             break;
@@ -264,132 +260,29 @@ CommunicationManager *gCommunicationManager;
     
     if (direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT) {
         if (sPoint.y < -DEVICE_HEIGHT*DEVICE_RATIO/2)
-            sPoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2 + 20.0f;
+            sPoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2;
         if (ePoint.y < -DEVICE_HEIGHT*DEVICE_RATIO/2)
-            ePoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2 + 20.0f;
+            ePoint.y = -DEVICE_HEIGHT*DEVICE_RATIO/2;
         if (sPoint.y > DEVICE_HEIGHT*DEVICE_RATIO/2)
-            sPoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2 - 20.0f;
+            sPoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2;
         if (ePoint.y > DEVICE_HEIGHT*DEVICE_RATIO/2)
-            ePoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2 - 20.0f;
+            ePoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2;
     }
     else
     {
         if (sPoint.x < -DEVICE_WIDTH*DEVICE_RATIO/2)
-            sPoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2 + 20.0f;
+            sPoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2;
         if (ePoint.x < -DEVICE_WIDTH*DEVICE_RATIO/2)
-            ePoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2 + 20.0f;
+            ePoint.x = -DEVICE_WIDTH*DEVICE_RATIO/2;
         if (sPoint.x > DEVICE_WIDTH*DEVICE_RATIO/2)
-            sPoint.x = DEVICE_WIDTH*DEVICE_RATIO/2 - 20.0f;
+            sPoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
         if (ePoint.x > DEVICE_WIDTH*DEVICE_RATIO/2)
-            ePoint.x = DEVICE_WIDTH*DEVICE_RATIO/2 - 20.0f;
+            ePoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
     }
     
     if (delegate) {
         [delegate drawConnectionLine:sPoint andEndPoint:ePoint];
     }
-    
-    
-    //    int peerDeviceWidth;
-//    int peerDeviceHeight;
-//    int X;
-//    int Y;
-//    
-//    float ratio;
-//    
-//    if (peerDeviceType == 3) {   //ipad
-//        ratio = 163.0/132.0;
-//        peerDeviceWidth = (int)(768.0*ratio);
-//        peerDeviceHeight = (int)(1004.0*ratio);
-//    }
-//    else
-//    {
-//        ratio = 132.0/163.0;
-//        peerDeviceWidth = (int)(320.0*ratio);
-//        peerDeviceHeight = (int)(460.0*ratio);
-//    }
-//    
-//    X = (int)(peerEndPoint.x*ratio);
-//    Y = (int)(peerEndPoint.y*ratio);
-//    
-//    // draw on myself
-//    if (DEVICE_TYPE == DEVICE_TYPE_IPHONE3GS) {          //iphone
-//        
-//        switch (direction) {
-//            case DIRECTION_UP: // up
-//                //point1View.frame = CGRectMake(0, 0, 320, 10);
-//                break;
-//            case DIRECTION_RIGHT: // right
-//                //point1View.frame = CGRectMake(310, 0, 10, 480);
-//                break;
-//            case DIRECTION_DOWN: // down
-//                //point1View.frame = CGRectMake(0, 450, 320, 10);
-//                break;
-//            case DIRECTION_LEFT: // left
-//                //point1View.frame = CGRectMake(0, 0, 10, 480);
-//                break;
-//            default:
-//                break;
-//        }
-//    } else if (DEVICE_TYPE == DEVICE_TYPE_IPADMINI)     //ipad
-//    {
-//        point1 = CGPointMake(endPoint.x, endPoint.y);
-//        point2 = CGPointMake(endPoint.x, endPoint.y);
-//        
-//        switch (direction) {
-//            case DIRECTION_UP:  //up
-//                point1.y = point2.y = 0;
-//                break;
-//            case DIRECTION_RIGHT:  //right
-//                point1.x = point2.x = DEVICE_WIDTH;
-//                break;
-//            case DIRECTION_DOWN:  //down
-//                point1.y = point2.y = DEVICE_HEIGHT;
-//                break;
-//            case DIRECTION_LEFT: //left
-//                point1.x = point2.x = 0;
-//                break;
-//            default:
-//                break;
-//        }
-//        if (direction == DIRECTION_RIGHT || direction == DIRECTION_LEFT) {
-//            switch (peerDeviceDirection) {
-//                case DIRECTION_UP: //up
-//                case DIRECTION_DOWN: // down
-//                    point1.y -= X;
-//                    point2.y += peerDeviceWidth - X;
-//                    break;
-//                case DIRECTION_RIGHT: //right
-//                case DIRECTION_LEFT: //left
-//                    point1.y -= Y;
-//                    point2.y += peerDeviceHeight - Y;
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//        else
-//        {
-//            switch (peerDeviceDirection) {
-//                case DIRECTION_UP: //up
-//                case DIRECTION_DOWN: // down
-//                    point1.x -= X;
-//                    point2.x += peerDeviceWidth - X;
-//                    break;
-//                case DIRECTION_RIGHT: //right
-//                case DIRECTION_LEFT: //left
-//                    point1.x -= Y;
-//                    point2.x += peerDeviceHeight - Y;
-//                    break;
-//                default:
-//                    break;
-//            }
-//            
-//        }
-//        
-//        //point1View.frame = CGRectMake(point1.x, point1.y, 10, 10);
-//        //point2View.frame = CGRectMake(point2.x, point2.y, 10, 10);
-//    }
-
 }
 
 - (GLKVector3) convertCoordinationTo3D:(CGPoint)point
