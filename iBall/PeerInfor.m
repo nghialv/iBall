@@ -10,14 +10,15 @@
 
 @implementation PeerInfor
 
-@synthesize transformMatrix, line, peerId;
+@synthesize transformMatrix, line, peerId, direction;
 
-- (id)initWithAll:(NSString *)pPeerId andTransformMatrix:(GLKMatrix4)matrix andLineStartPoint:(GLKVector3)sPoint andLineEndPoint:(GLKVector3)ePoint
+- (id)initWithAll:(NSString *)pPeerId andTransformMatrix:(GLKMatrix4)matrix andDirection:(int)pDirection andLineStartPoint:(GLKVector3)sPoint andLineEndPoint:(GLKVector3)ePoint
 {
     self = [super init];
     if (self) {
         peerId = pPeerId;
         transformMatrix = matrix;
+        direction = pDirection;
         line = [[MyLine alloc] initWithStartEndPoint:sPoint andEndPoint:ePoint];
     }
     return self;

@@ -88,29 +88,42 @@
     
 }
 
-- (void) receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
+- (void) receiveNewBall:(NSString *)peerId andStartPosition:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
 {
     NSLog(@"REVEIVE BALL");
-    GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
+    PeerInfor *fromPeer;
+    for(PeerInfor *p in readyPeerArray)
+    {
+        if ([p.peerId isEqualToString:peerId]) {
+            fromPeer = p;
+            break;
+        }
+    }
     
+    GLKVector3 pos = GLKMatrix4MultiplyVector3WithTranslation(fromPeer.transformMatrix, startPosition);
+    GLKVector3 ori = GLKMatrix4MultiplyVector3WithTranslation(fromPeer.transformMatrix, GLKVector3Make(0.0f, 0.0f, 0.0f));
+    GLKVector3 vel = GLKMatrix4MultiplyVector3WithTranslation(fromPeer.transformMatrix, startVelocity);
+    vel = GLKVector3Subtract(vel, ori);
     
-    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:startVelocity andRadius:BALL_RADIUS andTex:texIndex];
+    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:texIndex];
     [ballArray addObject:ball2];
 }
 
-- (void) drawConnectionLine:(NSString *)peerID andTransitionMatrix:(GLKMatrix4)matrix andStartPoint:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint
+- (void) drawConnectionLine:(NSString *)peerID andTransitionMatrix:(GLKMatrix4)matrix andDirection:(int)pDirection andStartPoint:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint
 {
     BOOL alreadyExit = false;
     for (PeerInfor *p in readyPeerArray)
     {
         if ([p.peerId isEqualToString:peerID]) {
+            [p setDirection:pDirection];
+            [p setTransformMatrix:matrix];
             [p.line changeStartEndPoint:sPoint andEndPoint:ePoint];
             alreadyExit = true;
         }
     }
     
     if (!alreadyExit) {
-        PeerInfor *newPeer = [[PeerInfor alloc] initWithAll:peerID andTransformMatrix:matrix andLineStartPoint:sPoint andLineEndPoint:ePoint];
+        PeerInfor *newPeer = [[PeerInfor alloc] initWithAll:peerID andTransformMatrix:matrix andDirection:pDirection andLineStartPoint:sPoint andLineEndPoint:ePoint];
         [readyPeerArray addObject:newPeer];
     }
 }
@@ -165,27 +178,31 @@
     willRemoveBallArray = [[NSMutableArray alloc] init];
     readyPeerArray = [[NSMutableArray alloc] init];
     
-    GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
-    GLKVector3 vel = GLKVector3Make(2.5, 4.0, 0.0);
+    if ([gCommunicationManager isMainDevice])
+    {
+        GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
+        GLKVector3 vel = GLKVector3Make(2.5, 4.0, 0.0);
     
-    NSLog(@"SETUP GL");
+        NSLog(@"SETUP GL");
     
-    Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:0];
-    [ballArray addObject:ball];
+        Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:0];
+        [ballArray addObject:ball];
     
+        
+        pos.y = -100.0;
+        vel.y = -3.0;
     
-    pos.y = -100.0;
-    vel.y = -3.0;
-    
-    Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
-    [ballArray addObject:ball2];
-    //
-    //    pos.y = 200.0;
-    //    vel.y = -4.0;
-    //
-    //    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
-    //    [ballArray addObject:ball3];
-    
+        //Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+        //[ballArray addObject:ball2];
+        
+        
+        //
+        //    pos.y = 200.0;
+        //    vel.y = -4.0;
+        //
+        //    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+        //    [ballArray addObject:ball3];
+    }
     
     [Cube initialize];
     cube = [[Cube alloc] initWithPos:GLKVector3Make(0, 0, 0)];
@@ -201,19 +218,55 @@
 {
     for (Ball *b in ballArray) {
         [b update];
+        Boolean send = false;
+        float cosXVel = GLKVector3DotProduct(b.velocity, GLKVector3Make(1.0f, 0.0f, 0.0f));
+        float cosYVel = GLKVector3DotProduct(b.velocity, GLKVector3Make(0.0f, 1.0f, 0.0f));
         
-        if ((b.position.y + BALL_RADIUS) > SPACE_HEIGHT/2 || (b.position.y -BALL_RADIUS) < -SPACE_HEIGHT/2) {
+        // up
+        if ((b.position.y + BALL_RADIUS) > SPACE_HEIGHT/2 && cosYVel > 0)
+        {
+            NSLog(@"UP");
+            for (PeerInfor *p in readyPeerArray)
+            {
+                NSLog(@"direction: %d ballx: %f startPointx: %f endPointx: %f", p.direction, b.position.x, p.line.startPoint.x, p.line.endPoint.x);
+                
+                if (p.direction == DIRECTION_UP && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
+                    NSLog(@"SEND ball");
+                    
+                    //bool invert;
+                    //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
+                    //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
+                    //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
+                    
+                    [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+                    [willRemoveBallArray addObject:b];
+                    
+                    send = true;
+                }
+            }
+            
+            if (!send) {
+                [b redictY];
+                b.position = GLKVector3Add(b.position,b.velocity);
+            }
+        }
+        
+        // down
+        if ((b.position.y -BALL_RADIUS) < -SPACE_HEIGHT/2 && cosYVel < 0)
+        {
             [b redictY];
             b.position = GLKVector3Add(b.position,b.velocity);
         }
         
-        if ((b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2) {
+        //left
+        if ((b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2 && cosXVel < 0)
+        {
             [b redictX];
             b.position = GLKVector3Add(b.position,b.velocity);
         }
         
-        // send ball
-        if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2)
+        //right
+        if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2 && cosXVel > 0)
         {
             [b redictX];
             b.position = GLKVector3Add(b.position,b.velocity);
@@ -222,6 +275,8 @@
             //            [willRemoveBallArray addObject:b];
         }
         
+        
+        // check collision with other ball
         for (Ball *b2 in ballArray) {
             if (b != b2) {
                 float distance = GLKVector3Distance(b.position, b2.position);

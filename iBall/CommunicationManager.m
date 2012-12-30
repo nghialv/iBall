@@ -120,8 +120,11 @@ CommunicationManager *gCommunicationManager;
     }
 }
 
-- (void) sendBallData:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
+- (void) sendBallData:(NSString *)peerId andStartPosition:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex
 {
+    if (![connectedPeerList containsObject:peerId])
+        return;
+    
     NSLog(@"Send ball");
     NSString *message = [[NSString alloc] initWithFormat:@"%d %f %f %f %f %f %f %d", MESG_TYPE_SEND_BALL,startPosition.x, startPosition.y, startPosition.z, startVelocity.x,startVelocity.y,startVelocity.z, texIndex];
     
@@ -129,7 +132,7 @@ CommunicationManager *gCommunicationManager;
     
     NSError *error = nil;
     [mySession sendData:sendData
-                toPeers:connectedPeerList
+                toPeers:[NSArray arrayWithObject:peerId]
            withDataMode:GKSendDataReliable
                   error:&error];
     
@@ -184,7 +187,7 @@ CommunicationManager *gCommunicationManager;
             int texIndex = [[params objectAtIndex:7] intValue];
             
             if (delegate) {
-                [delegate receiveNewBall:p andVelocity:v andTexIndex:texIndex];
+                [delegate receiveNewBall:peer andStartPosition:p andVelocity:v andTexIndex:texIndex];
             }
         }
     }
@@ -285,7 +288,7 @@ CommunicationManager *gCommunicationManager;
     NSLog(@"sP: %f %f %f", sP.x, sP.y, sP.z);
     
     if (delegate) {
-        [delegate drawConnectionLine:peerId andTransitionMatrix:convertMatrix andStartPoint:sPoint andEndPoint:ePoint];
+        [delegate drawConnectionLine:peerId andTransitionMatrix:convertMatrix andDirection:direction andStartPoint:sPoint andEndPoint:ePoint];
     }
 }
 

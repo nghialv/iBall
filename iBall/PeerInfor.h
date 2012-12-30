@@ -14,12 +14,14 @@
     NSString *peerId;
     GLKMatrix4  transformMatrix;
     MyLine *line;
+    int direction;
 }
 
 @property(nonatomic) NSString *peerId;
 @property(nonatomic, assign) GLKMatrix4 transformMatrix;
 @property(nonatomic) MyLine *line;
+@property(nonatomic, assign) int direction;
 
-- (id)initWithAll:(NSString*)pPeerId andTransformMatrix:(GLKMatrix4)matrix andLineStartPoint:(GLKVector3)sPoint andLineEndPoint:(GLKVector3)ePoint;
+- (id)initWithAll:(NSString*)pPeerId andTransformMatrix:(GLKMatrix4)matrix andDirection:(int)pDirection andLineStartPoint:(GLKVector3)sPoint andLineEndPoint:(GLKVector3)ePoint;
 
 @end

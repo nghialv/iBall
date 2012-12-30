@@ -15,11 +15,11 @@
 
 @protocol CommunicationManagerDelegate <NSObject>
     - (void)connectionStatusChanged;
-    - (void)drawConnectionLine:(NSString *)peerID andTransitionMatrix:(GLKMatrix4)matrix andStartPoint:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint;
+- (void)drawConnectionLine:(NSString *)peerID andTransitionMatrix:(GLKMatrix4)matrix andDirection:(int)pDirection andStartPoint:(GLKVector3)sPoint andEndPoint:(GLKVector3)ePoint;
 
     - (void)receiveGameStart;
     - (void)receiveCalibrationData;
-    - (void)receiveNewBall:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
+    - (void)receiveNewBall:(NSString *)peerId andStartPosition:(GLKVector3)startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
 @end
 
 
@@ -72,7 +72,7 @@ extern CommunicationManager *gCommunicationManager;
 - (void) connectToDevice:(NSString *)peerId;
 
 - (void) sendCalibrationData:(CGPoint)pEndPoint andDirection:(int)pDirection;
-- (void) sendBallData:(GLKVector3) startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
+- (void) sendBallData:(NSString *)peerId andStartPosition:(GLKVector3) startPosition andVelocity:(GLKVector3)startVelocity andTexIndex:(int)texIndex;
 
 - (void) calculateTransitionMatrix:(NSString *)peerId andPeerDeviceType:(int)peerDeviceType andDeviceDirection:(int)peerDeviceDirection andPeerEndpoint:(GLKVector3)peerEndPoint;
 
