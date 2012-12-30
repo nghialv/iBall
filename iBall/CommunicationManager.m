@@ -272,6 +272,12 @@ CommunicationManager *gCommunicationManager;
             sPoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2;
         if (ePoint.y > DEVICE_HEIGHT*DEVICE_RATIO/2)
             ePoint.y = DEVICE_HEIGHT*DEVICE_RATIO/2;
+        
+        if (sPoint.y < ePoint.y) {
+            float tmp = sPoint.y;
+            sPoint.y = ePoint.y;
+            ePoint.y = tmp;
+        }
     }
     else
     {
@@ -283,6 +289,12 @@ CommunicationManager *gCommunicationManager;
             sPoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
         if (ePoint.x > DEVICE_WIDTH*DEVICE_RATIO/2)
             ePoint.x = DEVICE_WIDTH*DEVICE_RATIO/2;
+        
+        if (sPoint.x < ePoint.x) {
+            float tmp = sPoint.x;
+            sPoint.x = ePoint.x;
+            ePoint.x = tmp;
+        }
     }
     
     NSLog(@"sP: %f %f %f", sP.x, sP.y, sP.z);

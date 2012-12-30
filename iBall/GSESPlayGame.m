@@ -181,7 +181,7 @@
     if ([gCommunicationManager isMainDevice])
     {
         GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
-        GLKVector3 vel = GLKVector3Make(2.5, 4.0, 0.0);
+        GLKVector3 vel = GLKVector3Make(5.5, 6.5, 0.0);
     
         NSLog(@"SETUP GL");
     
@@ -190,10 +190,10 @@
     
         
         pos.y = -100.0;
-        vel.y = -3.0;
+        vel.y = -6.5;
     
-        //Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
-        //[ballArray addObject:ball2];
+        Ball *ball2 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+        [ballArray addObject:ball2];
         
         
         //
@@ -228,8 +228,6 @@
             NSLog(@"UP");
             for (PeerInfor *p in readyPeerArray)
             {
-                NSLog(@"direction: %d ballx: %f startPointx: %f endPointx: %f", p.direction, b.position.x, p.line.startPoint.x, p.line.endPoint.x);
-                
                 if (p.direction == DIRECTION_UP && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
                     NSLog(@"SEND ball");
                     
@@ -254,25 +252,79 @@
         // down
         if ((b.position.y -BALL_RADIUS) < -SPACE_HEIGHT/2 && cosYVel < 0)
         {
-            [b redictY];
-            b.position = GLKVector3Add(b.position,b.velocity);
+            for (PeerInfor *p in readyPeerArray)
+            {
+                if (p.direction == DIRECTION_DOWN && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
+                    NSLog(@"SEND ball");
+                    
+                    //bool invert;
+                    //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
+                    //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
+                    //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
+                    
+                    [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+                    [willRemoveBallArray addObject:b];
+                    
+                    send = true;
+                }
+            }
+            
+            if (!send) {
+                [b redictY];
+                b.position = GLKVector3Add(b.position,b.velocity);
+            }
         }
         
         //left
         if ((b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2 && cosXVel < 0)
         {
-            [b redictX];
-            b.position = GLKVector3Add(b.position,b.velocity);
+            for (PeerInfor *p in readyPeerArray)
+            {
+                if (p.direction == DIRECTION_LEFT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
+                    NSLog(@"SEND ball");
+                    
+                    //bool invert;
+                    //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
+                    //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
+                    //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
+                    
+                    [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+                    [willRemoveBallArray addObject:b];
+                    
+                    send = true;
+                }
+            }
+            
+            if (!send) {
+                [b redictX];
+                b.position = GLKVector3Add(b.position,b.velocity);
+            }
         }
         
         //right
         if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2 && cosXVel > 0)
         {
-            [b redictX];
-            b.position = GLKVector3Add(b.position,b.velocity);
+            for (PeerInfor *p in readyPeerArray)
+            {
+                if (p.direction == DIRECTION_RIGHT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
+                    NSLog(@"SEND ball");
+                    
+                    //bool invert;
+                    //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
+                    //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
+                    //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
+                    
+                    [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+                    [willRemoveBallArray addObject:b];
+                    
+                    send = true;
+                }
+            }
             
-            //            [gCommunicationManager sendBallData:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
-            //            [willRemoveBallArray addObject:b];
+            if (!send) {
+                [b redictX];
+                b.position = GLKVector3Add(b.position,b.velocity);
+            }
         }
         
         
