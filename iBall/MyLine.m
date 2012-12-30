@@ -109,17 +109,16 @@ static AGLKVertexAttribArrayBuffer * vertexColorBuffer;
 {
     GLKVector3 line = GLKVector3Subtract(startPoint, endPoint);
     GLKVector3 point = GLKVector3DivideScalar(GLKVector3Add(startPoint, endPoint), 2.0f);
-    float angle = 0.0f;
-    if (GLKVector3DotProduct(line, GLKVector3Make(1.0f, 0.0f, 0.0f)) == 0.0) {
-        angle = M_PI_2;
-    }
-       
-    GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
+    float length = GLKVector3Length(line);
+    line = GLKVector3Normalize(line);
+    float angle = acosf(GLKVector3DotProduct(line, GLKVector3Make(1.0f, 0.0f, 0.0f)));
+   
     
+    GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
     modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, point.x, point.y, point.z);
     modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, angle, 0.0f, 0.0f, 1.0f);
-    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, GLKVector3Length(line), 1, 1);
-    
+    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, length, 1, 1);
+
     effect.transform.modelviewMatrix = modelViewMatrix;
     effect.light0.enabled = GL_FALSE;
     
