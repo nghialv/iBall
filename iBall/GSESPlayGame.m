@@ -258,13 +258,14 @@
         [ballArray addObject:ball2];
         
         
-        
         pos.y = 200.0;
         vel.y = -4.0;
         
         Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
         [ballArray addObject:ball3];
     }
+    
+    addBallTimer = 0.0f;
 }
 
 - (void)tearDownGL
@@ -332,6 +333,22 @@
     if (![gCommunicationManager isMainDevice]) {
         [leftFlipper update];
         [rightFlipper update];
+    }
+    
+    
+    // add newball
+    if ([gCommunicationManager isMainDevice]) {
+        addBallTimer += self.timeSinceLastUpdate;
+        if (addBallTimer > 1.5f) {
+            if ([ballArray count] < BALL_MAX_NUM) {
+                GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
+                GLKVector3 vel = GLKVector3Make(5.5, 6.5, 0.0);
+            
+                Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:0];
+                [ballArray addObject:ball];
+            }
+            addBallTimer = 0.0f;
+        }
     }
 }
 

@@ -34,6 +34,8 @@
     
     IBOutlet UILabel *clientScore;
     IBOutlet UIButton *backButton;
+    
+    float addBallTimer;
 }
 
 
