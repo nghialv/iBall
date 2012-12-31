@@ -206,13 +206,15 @@
         //    [ballArray addObject:ball3];
     }
     
-    leftFlipperController = [[Ball alloc] initWithPosVelRadiTex:GLKVector3Make(50.0f, -280.0f, 0.0f) andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
-    rightFlipperController = [[Ball alloc] initWithPosVelRadiTex:GLKVector3Make(50.0f, 280.0f, 0.0f) andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
+    if (![gCommunicationManager isMainDevice]) {
+        leftFlipperController = [[Ball alloc] initWithPosVelRadiTex:GLKVector3Make(50.0f, -280.0f, 0.0f) andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
+        rightFlipperController = [[Ball alloc] initWithPosVelRadiTex:GLKVector3Make(50.0f, 280.0f, 0.0f) andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
     
-    [Flipper initialize];
-    rightFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(50.0f, 200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, -1.0f, 0.0f)];
+        [Flipper initialize];
+        rightFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(50.0f, 200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, -1.0f, 0.0f)];
     
-    leftFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(50.0f, -200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, 1.0f, 0.0f)];
+        leftFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(50.0f, -200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, 1.0f, 0.0f)];
+    }
     
     [MyLine initialize];
 }
@@ -226,175 +228,13 @@
     //update balls
     for (Ball *b in ballArray) {
         [b update];
-        Boolean send = false;
-        float cosXVel = GLKVector3DotProduct(b.velocity, GLKVector3Make(1.0f, 0.0f, 0.0f));
-        float cosYVel = GLKVector3DotProduct(b.velocity, GLKVector3Make(0.0f, 1.0f, 0.0f));
       
-        //check collsion with flipperController
-        if (leftFlipperController) {
-            if (GLKVector3Distance(b.position, leftFlipperController.position) < BALL_RADIUS + FLIPPER_CONTROLLER_RAIDUS) {
-                GLKVector3 bVel = b.velocity;
-               
-                GLKVector3 directionBtoB2 = GLKVector3Subtract(leftFlipperController.position,b.position);
-                directionBtoB2 = GLKVector3Normalize(directionBtoB2);
+        //check and handle collsion with flipper and flipperController
+        [self handleCollisionWithFlipper:b];
                 
-                GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
-                bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
-                
-                // Update own velocity
-                b.velocity = GLKVector3Add(b.velocity, bVelx);
-                
-                // update
-                b.position = GLKVector3Add(b.position,b.velocity);
-            }
-        }
-        
-        if (rightFlipperController) {
-            if (GLKVector3Distance(b.position, rightFlipperController.position) < BALL_RADIUS + FLIPPER_CONTROLLER_RAIDUS) {
-                GLKVector3 bVel = b.velocity;
-                
-                GLKVector3 directionBtoB2 = GLKVector3Subtract(rightFlipperController.position,b.position);
-                directionBtoB2 = GLKVector3Normalize(directionBtoB2);
-                
-                GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
-                bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
-                
-                // Update own velocity
-                b.velocity = GLKVector3Add(b.velocity, bVelx);
-                
-                // update
-                b.position = GLKVector3Add(b.position,b.velocity);
-            }
-        }
-        
-        // check collision with flipper
-        GLKVector3 flipperStartPoint = [leftFlipper getStartPointOfFlipper];
-        GLKVector3 flipperEndPoint = [leftFlipper getEndPointOfFlipper];
-        float A = flipperEndPoint.y - flipperStartPoint.y;
-        float B = flipperStartPoint.x - flipperEndPoint.x;
-        float C = flipperEndPoint.x * flipperStartPoint.y - flipperStartPoint.x * flipperEndPoint.y;
-        
-        float d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
-        float d2 = GLKVector3Distance(flipperStartPoint, b.position);
-        if (d < BALL_RADIUS + FLIPPER_WIDTH/2 && d2 < (FLIPPER_LENGTH+BALL_RADIUS)) {
-            b.velocity = GLKVector3MultiplyScalar(b.velocity, -1.0f);
-//            for (int i=0; i<100; i++)
-//            {
-                b.position = GLKVector3Add(b.position,b.velocity);
-            [leftFlipper changeAngleVelocityDirection];
-//                float d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
-//                float d2 = GLKVector3Distance(flipperStartPoint, b.position);
-//                if (d > BALL_RADIUS + FLIPPER_WIDTH/2 || d2 > (FLIPPER_LENGTH+BALL_RADIUS))
-//                    break;
-//            }
-            
-        }
-        
-        flipperStartPoint = [rightFlipper getStartPointOfFlipper];
-        flipperEndPoint = [rightFlipper getEndPointOfFlipper];
-        A = flipperEndPoint.y - flipperStartPoint.y;
-        B = flipperStartPoint.x - flipperEndPoint.x;
-        C = flipperEndPoint.x * flipperStartPoint.y - flipperStartPoint.x * flipperEndPoint.y;
-        
-        d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
-        d2 = GLKVector3Distance(flipperStartPoint, b.position);
-        if (d < BALL_RADIUS + FLIPPER_WIDTH/2 && d2 < (FLIPPER_LENGTH+BALL_RADIUS)) {
-            b.velocity = GLKVector3MultiplyScalar(b.velocity, -1.0f);
-            b.position = GLKVector3Add(b.position,b.velocity);
-        }
-        
         //check collision with wall
-        // up
-        if ((b.position.y + BALL_RADIUS) > SPACE_HEIGHT/2 && cosYVel > 0)
-        {
-            NSLog(@"UP");
-            for (PeerInfor *p in readyPeerArray)
-            {
-                if (p.direction == DIRECTION_UP && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
-                    NSLog(@"SEND ball");
-                    
-                    //bool invert;
-                    //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
-                    //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
-                    //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
-                    
-                    [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
-                    [willRemoveBallArray addObject:b];
-                    
-                    send = true;
-                }
-            }
-            
-            if (!send) {
-                [b redictY];
-                b.position = GLKVector3Add(b.position,b.velocity);
-            }
-        }
-        
-        // down
-        if ((b.position.y -BALL_RADIUS) < -SPACE_HEIGHT/2 && cosYVel < 0)
-        {
-            for (PeerInfor *p in readyPeerArray)
-            {
-                if (p.direction == DIRECTION_DOWN && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
-                    NSLog(@"SEND ball");
-                    
-                    [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
-                    [willRemoveBallArray addObject:b];
-                    
-                    send = true;
-                }
-            }
-            
-            if (!send) {
-                [b redictY];
-                b.position = GLKVector3Add(b.position,b.velocity);
-            }
-        }
-        
-        //left
-        if ((b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2 && cosXVel < 0)
-        {
-            for (PeerInfor *p in readyPeerArray)
-            {
-                if (p.direction == DIRECTION_LEFT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
-                    NSLog(@"SEND ball");
-                    
-                    [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
-                    [willRemoveBallArray addObject:b];
-                    
-                    send = true;
-                }
-            }
-            
-            if (!send) {
-                [b redictX];
-                b.position = GLKVector3Add(b.position,b.velocity);
-            }
-        }
-        
-        //right
-        if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2 && cosXVel > 0)
-        {
-            for (PeerInfor *p in readyPeerArray)
-            {
-                if (p.direction == DIRECTION_RIGHT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
-                    NSLog(@"SEND ball");
-                    
-                    [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
-                    [willRemoveBallArray addObject:b];
-                    
-                    send = true;
-                }
-            }
-            
-            if (!send) {
-                [b redictX];
-                b.position = GLKVector3Add(b.position,b.velocity);
-            }
-        }
-        
-        
+        [self handleCollisionWithWall:b];
+                
         // check collision with other ball
         for (Ball *b2 in ballArray) {
             if (b != b2) {
@@ -438,10 +278,203 @@
     [rightFlipperController update];
     
     // update Flipper
-    [leftFlipper update];
-    [rightFlipper update];
+    if (![gCommunicationManager isMainDevice]) {
+        [leftFlipper update];
+        [rightFlipper update];
+    }
 }
 
+- (void)handleCollisionWithFlipper:(Ball *)b
+{
+    if ([gCommunicationManager isMainDevice])
+        return;
+    
+    if (leftFlipperController) {
+        if (GLKVector3Distance(b.position, leftFlipperController.position) < BALL_RADIUS + FLIPPER_CONTROLLER_RAIDUS) {
+            GLKVector3 bVel = b.velocity;
+            
+            GLKVector3 directionBtoB2 = GLKVector3Subtract(leftFlipperController.position,b.position);
+            directionBtoB2 = GLKVector3Normalize(directionBtoB2);
+            
+            GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
+            bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
+            
+            // Update own velocity
+            b.velocity = GLKVector3Add(b.velocity, bVelx);
+            
+            // update
+            b.position = GLKVector3Add(b.position,b.velocity);
+        }
+    }
+    
+    if (rightFlipperController) {
+        if (GLKVector3Distance(b.position, rightFlipperController.position) < BALL_RADIUS + FLIPPER_CONTROLLER_RAIDUS) {
+            GLKVector3 bVel = b.velocity;
+            
+            GLKVector3 directionBtoB2 = GLKVector3Subtract(rightFlipperController.position,b.position);
+            directionBtoB2 = GLKVector3Normalize(directionBtoB2);
+            
+            GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
+            bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
+            
+            // Update own velocity
+            b.velocity = GLKVector3Add(b.velocity, bVelx);
+            
+            // update
+            b.position = GLKVector3Add(b.position,b.velocity);
+        }
+    }
+    
+    // check collision with flipper
+    GLKVector3 flipperStartPoint = [leftFlipper getStartPointOfFlipper];
+    GLKVector3 flipperEndPoint = [leftFlipper getEndPointOfFlipper];
+    float A = flipperEndPoint.y - flipperStartPoint.y;
+    float B = flipperStartPoint.x - flipperEndPoint.x;
+    float C = flipperEndPoint.x * flipperStartPoint.y - flipperStartPoint.x * flipperEndPoint.y;
+    
+    float d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
+    float d2 = GLKVector3Distance(flipperStartPoint, b.position);
+    if (d < BALL_RADIUS + FLIPPER_WIDTH/2 && d2 < (FLIPPER_LENGTH+BALL_RADIUS)) {
+        //b.velocity = GLKVector3MultiplyScalar(b.velocity, -1.0f);
+        
+        GLKVector3 bVel = b.velocity;
+        
+        GLKVector3 flipperVel = [leftFlipper getNormalVector];
+        GLKVector3 directionBtoB2 = GLKVector3MultiplyScalar(flipperVel, -1.0f);
+        
+        GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
+        bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
+        
+        // Update own velocity
+        b.velocity = GLKVector3Add(b.velocity, bVelx);
+        b.velocity = GLKVector3Add(b.velocity, GLKVector3MultiplyScalar(flipperVel, [leftFlipper getSpeed]));
+        
+        b.position = GLKVector3Add(b.position,b.velocity);
+        [leftFlipper changeAngleVelocityDirection];
+    }
+    
+    flipperStartPoint = [rightFlipper getStartPointOfFlipper];
+    flipperEndPoint = [rightFlipper getEndPointOfFlipper];
+    A = flipperEndPoint.y - flipperStartPoint.y;
+    B = flipperStartPoint.x - flipperEndPoint.x;
+    C = flipperEndPoint.x * flipperStartPoint.y - flipperStartPoint.x * flipperEndPoint.y;
+    
+    d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
+    d2 = GLKVector3Distance(flipperStartPoint, b.position);
+    if (d < BALL_RADIUS + FLIPPER_WIDTH/2 && d2 < (FLIPPER_LENGTH+BALL_RADIUS)) {
+        GLKVector3 bVel = b.velocity;
+        
+        GLKVector3 flipperVel = [rightFlipper getNormalVector];
+        GLKVector3 directionBtoB2 = GLKVector3MultiplyScalar(flipperVel, [rightFlipper getSpeed]);
+        
+        GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
+        bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
+        
+        // Update own velocity
+        b.velocity = GLKVector3Add(b.velocity, bVelx);
+        b.velocity = GLKVector3Add(b.velocity, GLKVector3MultiplyScalar(flipperVel, 1.0f));
+        
+        b.position = GLKVector3Add(b.position,b.velocity);
+        [rightFlipper changeAngleVelocityDirection];
+    }
+}
+
+- (void)handleCollisionWithWall:(Ball *)b
+{
+    Boolean send = false;
+    float cosXVel = GLKVector3DotProduct(b.velocity, GLKVector3Make(1.0f, 0.0f, 0.0f));
+    float cosYVel = GLKVector3DotProduct(b.velocity, GLKVector3Make(0.0f, 1.0f, 0.0f));
+    
+    // up
+    if ((b.position.y + BALL_RADIUS) > SPACE_HEIGHT/2 && cosYVel > 0)
+    {
+        NSLog(@"UP");
+        for (PeerInfor *p in readyPeerArray)
+        {
+            if (p.direction == DIRECTION_UP && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
+                NSLog(@"SEND ball");
+                
+                //bool invert;
+                //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
+                //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
+                //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
+                
+                [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+                [willRemoveBallArray addObject:b];
+                
+                send = true;
+            }
+        }
+        
+        if (!send) {
+            [b redictY];
+            b.position = GLKVector3Add(b.position,b.velocity);
+        }
+    }
+    
+    // down
+    if ((b.position.y -BALL_RADIUS) < -SPACE_HEIGHT/2 && cosYVel < 0)
+    {
+        for (PeerInfor *p in readyPeerArray)
+        {
+            if (p.direction == DIRECTION_DOWN && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
+                NSLog(@"SEND ball");
+                
+                [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+                [willRemoveBallArray addObject:b];
+                
+                send = true;
+            }
+        }
+        
+        if (!send) {
+            [b redictY];
+            b.position = GLKVector3Add(b.position,b.velocity);
+        }
+    }
+    
+    //left
+    if ((b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2 && cosXVel < 0)
+    {
+        for (PeerInfor *p in readyPeerArray)
+        {
+            if (p.direction == DIRECTION_LEFT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
+                NSLog(@"SEND ball");
+                
+                [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+                [willRemoveBallArray addObject:b];
+                
+                send = true;
+            }
+        }
+        
+        if (!send) {
+            [b redictX];
+            b.position = GLKVector3Add(b.position,b.velocity);
+        }
+    }
+    
+    //right
+    if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2 && cosXVel > 0)
+    {
+        for (PeerInfor *p in readyPeerArray)
+        {
+            if (p.direction == DIRECTION_RIGHT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
+                NSLog(@"SEND ball");
+                
+                [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
+                [willRemoveBallArray addObject:b];
+                
+                send = true;
+            }
+        }
+        
+        if (!send) {
+            [b redictX];
+            b.position = GLKVector3Add(b.position,b.velocity);
+        }
+    }
+}
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
@@ -467,7 +500,7 @@
     //[cube draw:self.effect];
     
     // draw flipper
-    if (leftFlipper) {
+    if (![gCommunicationManager isMainDevice] && leftFlipper) {
         [Flipper enableBuffer];
         [leftFlipper draw:self.effect];
         [rightFlipper draw:self.effect];

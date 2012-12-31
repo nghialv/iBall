@@ -108,4 +108,29 @@
     return position;
 }
 
+-(GLKVector3) getNormalVector
+{
+    GLKVector3 d = GLKVector3Subtract([self getEndPointOfFlipper], [self getStartPointOfFlipper]);
+    d = GLKVector3Normalize(d);
+    float tmp = d.x;
+    if (angleVelocity < 0.0f) {
+        d.x = d.y;
+        d.y = -tmp;
+    }
+    else{
+        d.x = -d.y;
+        d.y = tmp;
+    }
+    return d;
+}
+
+- (float) getSpeed
+{
+    if (flipping) {
+        return 1.0f;
+    }
+    else
+        return 0.0f;
+}
+
 @end

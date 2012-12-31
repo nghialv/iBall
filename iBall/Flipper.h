@@ -26,5 +26,6 @@
 - (GLKVector3) getEndPointOfFlipper;
 - (GLKVector3) getStartPointOfFlipper;
 - (void) changeAngleVelocityDirection;
-
+- (GLKVector3) getNormalVector;
+- (float) getSpeed;
 @end
