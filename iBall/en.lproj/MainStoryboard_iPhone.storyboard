@@ -252,11 +252,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cum-qQ-Nvw">
-                                <rect key="frame" x="27" y="20" width="60" height="44"/>
+                                <rect key="frame" x="15" y="16" width="45" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Back">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <state key="normal" backgroundImage="back-icon.png">
+                                    <color key="titleColor" red="0.19607843137254902" green="0.30980392156862746" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
@@ -266,18 +266,32 @@
                                     <action selector="backToMenu:" destination="XRo-bj-pwY" eventType="touchDown" id="mcG-vJ-Uyw"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="v4F-EH-koW">
+                                <rect key="frame" x="125" y="204" width="70" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <connections>
                             <outlet property="delegate" destination="XRo-bj-pwY" id="3Ol-R7-pNZ"/>
                         </connections>
                     </glkView>
                     <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="backButton" destination="cum-qQ-Nvw" id="u1Z-KD-RVB"/>
+                        <outlet property="clientScore" destination="v4F-EH-koW" id="ghk-vQ-sBc"/>
+                    </connections>
                 </glkViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZcS-lm-JN2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="745" y="-616"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="back-icon.png" width="256" height="256"/>
+    </resources>
     <classes>
         <class className="GLESGameState3D" superclassName="GLKViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GLESGameState3D.h"/>
@@ -299,6 +313,8 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GSESPlayGame.h"/>
             <relationships>
                 <relationship kind="action" name="backToMenu:"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="clientScore" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="GSMainMenu" superclassName="GameState">

@@ -31,7 +31,11 @@
     Flipper *rightFlipper;
     Ball *leftFlipperController;
     Ball *rightFlipperController;
+    
+    IBOutlet UILabel *clientScore;
+    IBOutlet UIButton *backButton;
 }
+
 
 - (void)setupGL;
 - (void)tearDownGL;
@@ -45,4 +49,6 @@
 - (void)handleCollisionWithFlippers:(Ball*)b;
 - (void)handleCollisionWithWall:(Ball*)b;
 - (void)handleCollisionWithFlipper:(Flipper *)flipper andBall:(Ball *)b;
+- (void)handlePassedBall:(Ball *)b;
+
 @end

@@ -46,4 +46,6 @@ static float DEVICES_RATIO[] = {RATIO_K/163.0, RATIO_K/163.0, RATIO_K/326.0, RAT
 
 #define FLIPPER_CONTROLLER_RAIDUS 90.0f
 
+#define BALL_MAX_NUM 30
+
 #endif

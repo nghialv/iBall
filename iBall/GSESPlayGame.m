@@ -165,6 +165,23 @@
             rightFlipper = [[Flipper alloc] initWithAll:rightFlipperPos andDirection:rightFlipperDirection andOriginDirection:pDirection];
         }
     }
+    
+    // edit score label and back button
+    if (pDirection == DIRECTION_LEFT) {
+        CGAffineTransform trans = CGAffineTransformMakeTranslation(gCommunicationManager.DEVICE_WIDTH/2.0f - 40.0f, 0.0f);
+        [clientScore setTransform:CGAffineTransformRotate(trans, -M_PI_2)];
+        
+        trans = CGAffineTransformMakeTranslation(0.0f, gCommunicationManager.DEVICE_HEIGHT - 70.0f);
+        [backButton setTransform:CGAffineTransformRotate(trans, -M_PI_2)];
+    }
+    else
+    {
+        CGAffineTransform trans = CGAffineTransformMakeTranslation(-gCommunicationManager.DEVICE_WIDTH/2.0f + 40.0f, 0.0f);
+        [clientScore setTransform:CGAffineTransformRotate(trans, M_PI_2)];
+        
+        trans = CGAffineTransformMakeTranslation(gCommunicationManager.DEVICE_WIDTH - 70.0f, 0.0f);
+        [backButton setTransform:CGAffineTransformRotate(trans, M_PI_2)];
+    }
 }
 
 #pragma mark - GLESGameState3D
@@ -241,12 +258,12 @@
         [ballArray addObject:ball2];
         
         
-        //
-        //    pos.y = 200.0;
-        //    vel.y = -4.0;
-        //
-        //    Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
-        //    [ballArray addObject:ball3];
+        
+        pos.y = 200.0;
+        vel.y = -4.0;
+        
+        Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+        [ballArray addObject:ball3];
     }
 }
 
@@ -260,6 +277,9 @@
     for (Ball *b in ballArray) {
         [b update];
       
+        //handle passedball
+        [self handlePassedBall:b];
+        
         //check and handle collsion with flipper and flipperController
         [self handleCollisionWithFlippers:b];
                 
@@ -386,6 +406,29 @@
         
         b.position = GLKVector3Add(b.position,b.velocity);
         [flipper changeAngleVelocityDirection];
+    }
+}
+
+- (void)handlePassedBall:(Ball *)b
+{
+    if ([gCommunicationManager isMainDevice])
+        return;
+    if ([[readyPeerArray objectAtIndex:0] direction] == DIRECTION_LEFT) {
+        if ((b.position.x + BALL_RADIUS) > SPACE_WIDTH/2)
+        {
+            int num = [clientScore.text intValue] + 1;
+            clientScore.text = [[NSString alloc] initWithFormat:@"%d",num];
+            [willRemoveBallArray addObject:b];
+        }
+    }
+    else
+    {
+        if ((b.position.x - BALL_RADIUS) < -SPACE_WIDTH/2)
+        {
+            int num = [clientScore.text intValue] + 1;
+            clientScore.text = [[NSString alloc] initWithFormat:@"%d",num];
+            [willRemoveBallArray addObject:b];
+        }
     }
 }
 
@@ -582,7 +625,6 @@
     UITouch *touch = [touches anyObject];
     GLKVector3 touchedPoint = [gCommunicationManager convertCoordinationTo3D:[touch locationInView:self.view]];
     
-    NSLog(@"TOUCHESBEGAN: %f %f %f", touchedPoint.x, touchedPoint.y, touchedPoint.z);
     if (GLKVector3Distance(touchedPoint, leftFlipperController.position) < FLIPPER_CONTROLLER_RAIDUS) {
         [leftFlipper flip];
     }

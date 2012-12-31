@@ -47,6 +47,8 @@
 		DC95C6E8168F536C00C5259A /* PeerInfor.m in Sources */ = {isa = PBXBuildFile; fileRef = DC95C6E7168F536C00C5259A /* PeerInfor.m */; };
 		DC9BE4AB168EA60D008668B3 /* Cube.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AA168EA60D008668B3 /* Cube.m */; };
 		DC9BE4B0168EB518008668B3 /* MyLine.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AF168EB518008668B3 /* MyLine.m */; };
+		DC9E51BD1691F028005D9D5E /* back-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC9E51BB1691F028005D9D5E /* back-icon.png */; };
+		DC9E51BE1691F028005D9D5E /* pause-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC9E51BC1691F028005D9D5E /* pause-icon.png */; };
 		DCCA119416787B4B001BE733 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCA119316787B4B001BE733 /* CommunicationManager.m */; };
 		DCD239CD167A1E5700D74D7C /* AGLKVertexAttribArrayBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD239CC167A1E5700D74D7C /* AGLKVertexAttribArrayBuffer.m */; };
 		DCD239D2167A1F7B00D74D7C /* bia.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = DCD239D0167A1F7B00D74D7C /* bia.jpeg */; };
@@ -127,6 +129,8 @@
 		DC9BE4AD168EA701008668B3 /* cubeData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cubeData.h; sourceTree = "<group>"; };
 		DC9BE4AE168EB518008668B3 /* MyLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLine.h; sourceTree = "<group>"; };
 		DC9BE4AF168EB518008668B3 /* MyLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLine.m; sourceTree = "<group>"; };
+		DC9E51BB1691F028005D9D5E /* back-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "back-icon.png"; path = "../../../../../../../Desktop/back-icon.png"; sourceTree = "<group>"; };
+		DC9E51BC1691F028005D9D5E /* pause-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pause-icon.png"; path = "../../../../../../../Desktop/pause-icon.png"; sourceTree = "<group>"; };
 		DCCA118416786B91001BE733 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		DCCA119216787B4B001BE733 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
 		DCCA119316787B4B001BE733 /* CommunicationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunicationManager.m; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 		DC19875B16785591006C138A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DC9E51BB1691F028005D9D5E /* back-icon.png */,
+				DC9E51BC1691F028005D9D5E /* pause-icon.png */,
 				DCD239D0167A1F7B00D74D7C /* bia.jpeg */,
 				DCD239D1167A1F7B00D74D7C /* bia2.jpeg */,
 			);
@@ -432,6 +438,8 @@
 				DC35E8D8168EDAC5003ABD3F /* logo-ipad-retina.png in Resources */,
 				DC35E8DA168EDAF8003ABD3F /* logo-iphone-5757.png in Resources */,
 				DC35E8DC168EDB26003ABD3F /* logo-iphone-retina.png in Resources */,
+				DC9E51BD1691F028005D9D5E /* back-icon.png in Resources */,
+				DC9E51BE1691F028005D9D5E /* pause-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
