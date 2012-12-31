@@ -42,7 +42,7 @@
 - (void)screenWasSwiped:(UISwipeGestureRecognizer*)swipe;
 - (void)startRecognizationGestures;
 
-- (void)handleCollisionWithFlipper:(Ball*)b;
+- (void)handleCollisionWithFlippers:(Ball*)b;
 - (void)handleCollisionWithWall:(Ball*)b;
-
+- (void)handleCollisionWithFlipper:(Flipper *)flipper andBall:(Ball *)b;
 @end
