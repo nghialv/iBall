@@ -49,8 +49,11 @@
         readyPeerArray = nil;
     }
     
+    leftFlipper = nil;
+    rightFlipper = nil;
+    
     [Ball destroyBuffer];
-    [Cube destroyBuffer];
+    [Flipper destroyBuffer];
     [MyLine destroyBuffer];
     [gCommunicationManager setDelegate:nil];
 }
@@ -67,10 +70,6 @@
     [m_pManager doStateChange:@"MainMenuStoryboardID"];
 }
 
-//- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-//{
-//    self.paused = !self.paused;
-//}
 
 #pragma mark - CommunicationManagerDelegate
 - (void) connectionStatusChanged
@@ -204,8 +203,10 @@
         //    [ballArray addObject:ball3];
     }
     
-    [Cube initialize];
-    cube = [[Cube alloc] initWithPos:GLKVector3Make(0, 0, 0)];
+    [Flipper initialize];
+    rightFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(0.0f, 200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, -1.0f, 0.0f)];
+    
+    leftFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(0.0f, -200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, 1.0f, 0.0f)];
     
     [MyLine initialize];
 }
@@ -216,6 +217,7 @@
 
 - (void)update
 {
+    //update balls
     for (Ball *b in ballArray) {
         [b update];
         Boolean send = false;
@@ -351,6 +353,10 @@
     
     [ballArray removeObjectsInArray:willRemoveBallArray];
     [willRemoveBallArray removeAllObjects];
+    
+    // update Flipper
+    [leftFlipper update];
+    [rightFlipper update];
 }
 
 
@@ -372,6 +378,13 @@
     // draw barrier
     //[Cube enableBuffer];
     //[cube draw:self.effect];
+    
+    // draw flipper
+    if (leftFlipper) {
+        [Flipper enableBuffer];
+        [leftFlipper draw:self.effect];
+        [rightFlipper draw:self.effect];
+    }
     
     //draw connection line
     [MyLine enableBuffer];
@@ -435,6 +448,15 @@
 {
     UITouch *touch = [touches anyObject];
     endPoint = [touch locationInView:self.view];
+}
+
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    //self.paused = !self.paused;
+    NSLog(@"TOUCHESBEGAN");
+    [leftFlipper flip];
+    [rightFlipper flip];
 }
 
 @end

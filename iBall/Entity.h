@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+#import "Common.h"
 
 @interface Entity : NSObject{
     GLKVector3 position;

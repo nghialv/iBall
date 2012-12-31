@@ -12,6 +12,8 @@
 
 @implementation Cube
 
+@synthesize angle;
+
 static BOOL initialized = NO;
 static AGLKVertexAttribArrayBuffer* cubeVertexPositionBuffer;
 static AGLKVertexAttribArrayBuffer* cubeVertexNormalBuffer;
@@ -72,31 +74,31 @@ static AGLKVertexAttribArrayBuffer* cubeVertexTextureCoordBuffer;
 }
 
 
-- (id)initWithPos:(GLKVector3)pos
+- (id)initWithPosAngLongWidth:(GLKVector3)pos andAngle:(float)ang andLong:(float)l andWidth:(float)w
 {
     self = [super init];
     if (self) {
+        angle = ang;
         position = pos;
         velocity = GLKVector3Make(0, 0, 0);
-        scale = GLKVector3Make(100.0, 100.0, 10);
+        scale = GLKVector3Make(w, l, 1.0f);
     }
     return self;
 }
 
-- (void)update
+- (GLKMatrix4) calculateModelViewMatrix
 {
-    //position = GLKVector3Add(position, velocity);
+    GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
+    
+    modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, position.x, position.y, position.z);
+    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, angle, 0.0f, 0.0f, 1.0f);
+    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, scale.x, scale.y, scale.z);
+    return modelViewMatrix;
 }
 
 - (void)draw:(GLKBaseEffect *)effect
 {
-    GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
-    modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, position.x, position.y, position.z);
-    
-    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, scale.x, scale.y, scale.z);
-    
-    
-    effect.transform.modelviewMatrix = modelViewMatrix;
+    effect.transform.modelviewMatrix = [self calculateModelViewMatrix];
     
     [effect prepareToDraw];
     

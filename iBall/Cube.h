@@ -11,14 +11,18 @@
 #import "Entity.h"
 
 @interface Cube : Entity{
-    
+    float angle;
 }
+
+@property(nonatomic, assign) float angle;
 
 + (void)enableBuffer;
 + (void)destroyBuffer;
 
-- (id)initWithPos:(GLKVector3)pos;
+- (id)initWithPosAngLongWidth:(GLKVector3)pos andAngle:(float)ang andLong:(float)l andWidth:(float)w;
 
 - (void)draw:(GLKBaseEffect *)effect;
+
+- (GLKMatrix4) calculateModelViewMatrix;
 
 @end

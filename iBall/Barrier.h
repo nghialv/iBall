@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 iNghia. All rights reserved.
 //
 
-#import "Entity.h"
+#import "Cube.h"
 
-@interface Barrier : Entity
+@interface Barrier : Cube
 
 @end

@@ -9,7 +9,8 @@
 #import "GLESGameState3D.h"
 #import "CommunicationManager.h"
 #import "Ball.h"
-#import "Cube.h"
+#import "Barrier.h"
+#import "Flipper.h"
 #import "MyLine.h"
 #import "PeerInfor.h"
 
@@ -26,7 +27,8 @@
     // for position, direction matrix
     CGPoint endPoint;
     
-    Cube *cube;
+    Flipper *leftFlipper;
+    Flipper *rightFlipper;
 }
 
 - (void)setupGL;
