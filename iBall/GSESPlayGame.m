@@ -257,11 +257,6 @@
                 if (p.direction == DIRECTION_DOWN && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
                     NSLog(@"SEND ball");
                     
-                    //bool invert;
-                    //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
-                    //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
-                    //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
-                    
                     [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
                     [willRemoveBallArray addObject:b];
                     
@@ -283,11 +278,6 @@
                 if (p.direction == DIRECTION_LEFT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
                     NSLog(@"SEND ball");
                     
-                    //bool invert;
-                    //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
-                    //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
-                    //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
-                    
                     [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
                     [willRemoveBallArray addObject:b];
                     
@@ -308,11 +298,6 @@
             {
                 if (p.direction == DIRECTION_RIGHT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
                     NSLog(@"SEND ball");
-                    
-                    //bool invert;
-                    //GLKMatrix4 tmp = GLKMatrix4Invert(p.transformMatrix, &invert);
-                    //GLKVector3 newPosition = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.position);
-                    //GLKVector3 newVelocity = GLKMatrix4MultiplyVector3WithTranslation(tmp, b.velocity);
                     
                     [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
                     [willRemoveBallArray addObject:b];
@@ -377,16 +362,18 @@
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     
-    
+    // draw ball
     [Ball enableBuffer];
     
     for (Ball *b in ballArray) {
         [b draw:self.effect];
     }
     
-    [Cube enableBuffer];
-    [cube draw:self.effect];
+    // draw barrier
+    //[Cube enableBuffer];
+    //[cube draw:self.effect];
     
+    //draw connection line
     [MyLine enableBuffer];
     for (PeerInfor *p in readyPeerArray)
     {

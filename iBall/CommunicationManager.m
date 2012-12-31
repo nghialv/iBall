@@ -94,7 +94,9 @@ CommunicationManager *gCommunicationManager;
 	mySession = nil;
     
     [availablePeerList removeAllObjects];
+    availablePeerList = nil;
     [connectedPeerList removeAllObjects];
+    connectedPeerList = nil;
 }
 
 #pragma mark - Send and receive data
