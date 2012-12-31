@@ -154,15 +154,15 @@
         if (leftFlipper) {
             leftFlipperController = [[Ball alloc] initWithPosVelRadiTex:leftFlipperControllerPos andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
             rightFlipperController = [[Ball alloc] initWithPosVelRadiTex:rightFlipperControllerPos andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
-            leftFlipper = [[Flipper alloc] initWithAll:leftFlipperPos andDirection:leftFlipperDirection];
-            rightFlipper = [[Flipper alloc] initWithAll:rightFlipperPos andDirection:rightFlipperDirection];
+            leftFlipper = [[Flipper alloc] initWithAll:leftFlipperPos andDirection:leftFlipperDirection andOriginDirection:pDirection];
+            rightFlipper = [[Flipper alloc] initWithAll:rightFlipperPos andDirection:rightFlipperDirection andOriginDirection:pDirection];
         }
         else{
             leftFlipperController = [[Ball alloc] initWithPosVelRadiTex:leftFlipperControllerPos andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
             rightFlipperController = [[Ball alloc] initWithPosVelRadiTex:rightFlipperControllerPos andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
             
-            leftFlipper = [[Flipper alloc] initWithAll:leftFlipperPos andDirection:leftFlipperDirection];
-            rightFlipper = [[Flipper alloc] initWithAll:rightFlipperPos andDirection:rightFlipperDirection];
+            leftFlipper = [[Flipper alloc] initWithAll:leftFlipperPos andDirection:leftFlipperDirection andOriginDirection:pDirection];
+            rightFlipper = [[Flipper alloc] initWithAll:rightFlipperPos andDirection:rightFlipperDirection andOriginDirection:pDirection];
         }
     }
 }

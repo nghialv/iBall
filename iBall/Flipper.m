@@ -10,24 +10,46 @@
 
 @implementation Flipper
 
-@synthesize angleVelocity, flipping, invert, modelMatrix;
+@synthesize angleVelocity, flipping, invert, modelMatrix, minAngle, maxAngle;
 
-- (id)initWithAll:(GLKVector3)originPos andDirection:(GLKVector3)direction
+- (id)initWithAll:(GLKVector3)originPos andDirection:(GLKVector3)direction andOriginDirection:(int)originDirection
 {
     self = [super init];
     if (self) {
         flipping = false;
         position = originPos;
-                
+        
         if (GLKVector3DotProduct(direction, GLKVector3Make(0.0f, 1.0f, 0.0f)) > 0.0f) {
-            invert = true;
-            angle = M_PI - FLIPPER_MAX_ANGLE;
-            angleVelocity = -FLIPPER_ANGLE_VELOCITY_UP;
+            minAngle = M_PI - FLIPPER_MAX_ANGLE;
+            maxAngle = M_PI + FLIPPER_MAX_ANGLE;
+            
+            if (originDirection == DIRECTION_LEFT) {
+                invert = false;
+                angle = minAngle;
+                angleVelocity = FLIPPER_ANGLE_VELOCITY_UP;
+            }
+            else
+            {
+                invert = true;
+                angle = maxAngle;
+                angleVelocity = FLIPPER_ANGLE_VELOCITY_DOWN;
+            }
         }
         else{
-            invert = false;
-            angle = FLIPPER_MAX_ANGLE;
-            angleVelocity = FLIPPER_ANGLE_VELOCITY_UP;
+            minAngle = -FLIPPER_MAX_ANGLE;
+            maxAngle = FLIPPER_MAX_ANGLE;
+            
+            if (originDirection == DIRECTION_LEFT) {
+                invert = true;
+                angle = maxAngle;
+                angleVelocity = FLIPPER_ANGLE_VELOCITY_DOWN;
+            }
+            else
+            {
+                invert = false;
+                angle = minAngle;
+                angleVelocity = FLIPPER_ANGLE_VELOCITY_UP;
+            }
         }
         
         velocity = GLKVector3Make(0, 0, 0);
@@ -38,13 +60,13 @@
 
 - (void) flip
 {
-    if (invert) {
-        angle = M_PI - FLIPPER_MAX_ANGLE;
-        angleVelocity = -FLIPPER_ANGLE_VELOCITY_UP;
+    if (invert){
+        angle = maxAngle;
+        angleVelocity = FLIPPER_ANGLE_VELOCITY_DOWN;
     }
     else
     {
-        angle = FLIPPER_MAX_ANGLE;
+        angle = minAngle;
         angleVelocity = FLIPPER_ANGLE_VELOCITY_UP;
     }
     flipping = true;
@@ -54,8 +76,8 @@
 {
     if (angleVelocity == FLIPPER_ANGLE_VELOCITY_UP)
         angleVelocity = FLIPPER_ANGLE_VELOCITY_DOWN;
-    else if (angleVelocity == -FLIPPER_ANGLE_VELOCITY_UP)
-        angleVelocity = -FLIPPER_ANGLE_VELOCITY_DOWN;
+    else if (angleVelocity == FLIPPER_ANGLE_VELOCITY_DOWN)
+        angleVelocity = FLIPPER_ANGLE_VELOCITY_UP;
 }
 
 - (void) update
@@ -64,23 +86,21 @@
         return;
     
     angle += angleVelocity;
-    if (invert) {
-        if (angle > M_PI+FLIPPER_MAX_ANGLE)
-            angleVelocity = -FLIPPER_ANGLE_VELOCITY_DOWN;
-        if (angle < M_PI-FLIPPER_MAX_ANGLE)
-        {
-            angleVelocity = -FLIPPER_ANGLE_VELOCITY_UP;
-            angle = M_PI-FLIPPER_MAX_ANGLE;
+    
+    if (angle > maxAngle)
+    {
+        angleVelocity = FLIPPER_ANGLE_VELOCITY_DOWN;
+        if (invert) {
+            angle = maxAngle;
             flipping = false;
         }
-    }else
+    }
+    if (angle < minAngle)
     {
-        if (angle < -FLIPPER_MAX_ANGLE)
-            angleVelocity = FLIPPER_ANGLE_VELOCITY_DOWN;
-        if (angle > FLIPPER_MAX_ANGLE)
-        {
-            angleVelocity = FLIPPER_ANGLE_VELOCITY_UP;
-            angle = FLIPPER_MAX_ANGLE;
+        angleVelocity = FLIPPER_ANGLE_VELOCITY_UP;
+        
+        if (!invert) {
+            angle = minAngle;
             flipping = false;
         }
     }
