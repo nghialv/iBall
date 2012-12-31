@@ -98,6 +98,7 @@ static NSMutableArray* ballTextureInforArray;
         position = pos;
         velocity = vel;
         scale = GLKVector3Make(radius*2, radius*2, radius*2);
+        rotationAxis = GLKVector3Make(0.0f, 0.0f, 1.0f);
         angle = 0;
         if (texIndex > 0)
             textureIndex = texIndex % [ballTextureInforArray count];
@@ -117,7 +118,8 @@ static NSMutableArray* ballTextureInforArray;
     else
         rotationAxis.x = -rotationAxis.x;
     
-    rotationAxis.z = 0;
+    rotationAxis.z = 0.0f;
+    
     angle += 2*sqrt(velocity.x*velocity.x+velocity.y*velocity.y)/scale.x;
     
     if (angle > 2*M_PI) {
@@ -133,7 +135,9 @@ static NSMutableArray* ballTextureInforArray;
     
     GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
     modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, position.x, position.y, position.z);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, angle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
+    if (GLKVector3Length(velocity) != 0) {
+        modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, angle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
+    }
     
     modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, scale.x, scale.y, scale.z);
 

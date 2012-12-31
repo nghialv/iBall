@@ -49,8 +49,11 @@
         readyPeerArray = nil;
     }
     
+    // delete flipper
     leftFlipper = nil;
     rightFlipper = nil;
+    leftFlipperController = nil;
+    rightFlipperController = nil;
     
     [Ball destroyBuffer];
     [Flipper destroyBuffer];
@@ -203,10 +206,13 @@
         //    [ballArray addObject:ball3];
     }
     
-    [Flipper initialize];
-    rightFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(0.0f, 200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, -1.0f, 0.0f)];
+    leftFlipperController = [[Ball alloc] initWithPosVelRadiTex:GLKVector3Make(50.0f, -280.0f, 0.0f) andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
+    rightFlipperController = [[Ball alloc] initWithPosVelRadiTex:GLKVector3Make(50.0f, 280.0f, 0.0f) andVel:GLKVector3Make(0.0f, 0.0f, 0.0f) andRadius:FLIPPER_CONTROLLER_RAIDUS andTex:0];
     
-    leftFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(0.0f, -200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, 1.0f, 0.0f)];
+    [Flipper initialize];
+    rightFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(50.0f, 200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, -1.0f, 0.0f)];
+    
+    leftFlipper = [[Flipper alloc] initWithAll:GLKVector3Make(50.0f, -200.0f, 0.0f) andDirection:GLKVector3Make(0.0f, 1.0f, 0.0f)];
     
     [MyLine initialize];
 }
@@ -223,7 +229,46 @@
         Boolean send = false;
         float cosXVel = GLKVector3DotProduct(b.velocity, GLKVector3Make(1.0f, 0.0f, 0.0f));
         float cosYVel = GLKVector3DotProduct(b.velocity, GLKVector3Make(0.0f, 1.0f, 0.0f));
+      
+        //check collsion with flipperController
+        if (leftFlipperController) {
+            if (GLKVector3Distance(b.position, leftFlipperController.position) < BALL_RADIUS + FLIPPER_CONTROLLER_RAIDUS) {
+                GLKVector3 bVel = b.velocity;
+               
+                GLKVector3 directionBtoB2 = GLKVector3Subtract(leftFlipperController.position,b.position);
+                directionBtoB2 = GLKVector3Normalize(directionBtoB2);
+                
+                GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
+                bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
+                
+                // Update own velocity
+                b.velocity = GLKVector3Add(b.velocity, bVelx);
+                
+                // update
+                b.position = GLKVector3Add(b.position,b.velocity);
+            }
+        }
         
+        if (rightFlipperController) {
+            if (GLKVector3Distance(b.position, rightFlipperController.position) < BALL_RADIUS + FLIPPER_CONTROLLER_RAIDUS) {
+                GLKVector3 bVel = b.velocity;
+                
+                GLKVector3 directionBtoB2 = GLKVector3Subtract(rightFlipperController.position,b.position);
+                directionBtoB2 = GLKVector3Normalize(directionBtoB2);
+                
+                GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
+                bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
+                
+                // Update own velocity
+                b.velocity = GLKVector3Add(b.velocity, bVelx);
+                
+                // update
+                b.position = GLKVector3Add(b.position,b.velocity);
+            }
+        }
+        
+        
+        //check collision with wall
         // up
         if ((b.position.y + BALL_RADIUS) > SPACE_HEIGHT/2 && cosYVel > 0)
         {
@@ -354,6 +399,9 @@
     [ballArray removeObjectsInArray:willRemoveBallArray];
     [willRemoveBallArray removeAllObjects];
     
+    [leftFlipperController update];
+    [rightFlipperController update];
+    
     // update Flipper
     [leftFlipper update];
     [rightFlipper update];
@@ -374,6 +422,10 @@
     for (Ball *b in ballArray) {
         [b draw:self.effect];
     }
+    
+    
+    [leftFlipperController draw:self.effect];
+    [rightFlipperController draw:self.effect];
     
     // draw barrier
     //[Cube enableBuffer];
@@ -454,9 +506,16 @@
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     //self.paused = !self.paused;
-    NSLog(@"TOUCHESBEGAN");
-    [leftFlipper flip];
-    [rightFlipper flip];
+    UITouch *touch = [touches anyObject];
+    GLKVector3 touchedPoint = [gCommunicationManager convertCoordinationTo3D:[touch locationInView:self.view]];
+    
+    NSLog(@"TOUCHESBEGAN: %f %f %f", touchedPoint.x, touchedPoint.y, touchedPoint.z);
+    if (GLKVector3Distance(touchedPoint, leftFlipperController.position) < FLIPPER_CONTROLLER_RAIDUS) {
+        [leftFlipper flip];
+    }
+    if (GLKVector3Distance(touchedPoint, rightFlipperController.position) < FLIPPER_CONTROLLER_RAIDUS) {
+        [rightFlipper flip];
+    }
 }
 
 @end

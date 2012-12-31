@@ -29,6 +29,8 @@
     
     Flipper *leftFlipper;
     Flipper *rightFlipper;
+    Ball *leftFlipperController;
+    Ball *rightFlipperController;
 }
 
 - (void)setupGL;
