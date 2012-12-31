@@ -267,6 +267,41 @@
             }
         }
         
+        // check collision with flipper
+        GLKVector3 flipperStartPoint = [leftFlipper getStartPointOfFlipper];
+        GLKVector3 flipperEndPoint = [leftFlipper getEndPointOfFlipper];
+        float A = flipperEndPoint.y - flipperStartPoint.y;
+        float B = flipperStartPoint.x - flipperEndPoint.x;
+        float C = flipperEndPoint.x * flipperStartPoint.y - flipperStartPoint.x * flipperEndPoint.y;
+        
+        float d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
+        float d2 = GLKVector3Distance(flipperStartPoint, b.position);
+        if (d < BALL_RADIUS + FLIPPER_WIDTH/2 && d2 < (FLIPPER_LENGTH+BALL_RADIUS)) {
+            b.velocity = GLKVector3MultiplyScalar(b.velocity, -1.0f);
+//            for (int i=0; i<100; i++)
+//            {
+                b.position = GLKVector3Add(b.position,b.velocity);
+            [leftFlipper changeAngleVelocityDirection];
+//                float d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
+//                float d2 = GLKVector3Distance(flipperStartPoint, b.position);
+//                if (d > BALL_RADIUS + FLIPPER_WIDTH/2 || d2 > (FLIPPER_LENGTH+BALL_RADIUS))
+//                    break;
+//            }
+            
+        }
+        
+        flipperStartPoint = [rightFlipper getStartPointOfFlipper];
+        flipperEndPoint = [rightFlipper getEndPointOfFlipper];
+        A = flipperEndPoint.y - flipperStartPoint.y;
+        B = flipperStartPoint.x - flipperEndPoint.x;
+        C = flipperEndPoint.x * flipperStartPoint.y - flipperStartPoint.x * flipperEndPoint.y;
+        
+        d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
+        d2 = GLKVector3Distance(flipperStartPoint, b.position);
+        if (d < BALL_RADIUS + FLIPPER_WIDTH/2 && d2 < (FLIPPER_LENGTH+BALL_RADIUS)) {
+            b.velocity = GLKVector3MultiplyScalar(b.velocity, -1.0f);
+            b.position = GLKVector3Add(b.position,b.velocity);
+        }
         
         //check collision with wall
         // up

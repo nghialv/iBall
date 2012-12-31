@@ -10,7 +10,7 @@
 
 @implementation Flipper
 
-@synthesize angleVelocity, flipping, invert;
+@synthesize angleVelocity, flipping, invert, modelMatrix;
 
 - (id)initWithAll:(GLKVector3)originPos andDirection:(GLKVector3)direction
 {
@@ -50,6 +50,14 @@
     flipping = true;
 }
 
+- (void) changeAngleVelocityDirection
+{
+    if (angleVelocity == FLIPPER_ANGLE_VELOCITY_UP)
+        angleVelocity = FLIPPER_ANGLE_VELOCITY_DOWN;
+    else if (angleVelocity == -FLIPPER_ANGLE_VELOCITY_UP)
+        angleVelocity = -FLIPPER_ANGLE_VELOCITY_DOWN;
+}
+
 - (void) update
 {
     if (!flipping)
@@ -80,14 +88,24 @@
 
 - (GLKMatrix4) calculateModelViewMatrix
 {
-    GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
+    modelMatrix = GLKMatrix4Identity;
     
-    modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, position.x, position.y, position.z);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, angle, 0.0f, 0.0f, 1.0f);
-    modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, 0.0f, -FLIPPER_LENGTH/2.0f, 0.0f);
+    modelMatrix = GLKMatrix4Translate(modelMatrix, position.x, position.y, position.z);
+    modelMatrix = GLKMatrix4Rotate(modelMatrix, angle, 0.0f, 0.0f, 1.0f);
+    modelMatrix = GLKMatrix4Translate(modelMatrix, 0.0f, -FLIPPER_LENGTH/2.0f, 0.0f);
     
-    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, scale.x, scale.y, scale.z);
-    return modelViewMatrix;
+    modelMatrix = GLKMatrix4Scale(modelMatrix, scale.x, scale.y, scale.z);
+    return modelMatrix;
+}
+
+- (GLKVector3) getEndPointOfFlipper
+{
+    return GLKMatrix4MultiplyVector3WithTranslation(modelMatrix, GLKVector3Make(0.0f, -0.5f, 0.0f));
+}
+
+- (GLKVector3) getStartPointOfFlipper
+{
+    return position;
 }
 
 @end
