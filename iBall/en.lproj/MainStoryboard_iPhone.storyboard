@@ -34,7 +34,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bDJ-V4-uVe">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bDJ-V4-uVe">
                                 <rect key="frame" x="95" y="81" width="130" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
@@ -49,7 +49,7 @@
                                     <action selector="playGameButton:" destination="F2Z-M2-PCo" eventType="touchDown" id="gdc-9N-14t"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7NS-QK-IaB">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7NS-QK-IaB">
                                 <rect key="frame" x="95" y="217" width="130" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
@@ -64,7 +64,7 @@
                                     <action selector="settingsButton:" destination="F2Z-M2-PCo" eventType="touchDown" id="isi-i5-3VS"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="EJV-NP-Ivk">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EJV-NP-Ivk">
                                 <rect key="frame" x="95" y="357" width="130" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
@@ -96,7 +96,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Dld-fX-ynh">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Dld-fX-ynh">
                                 <rect key="frame" x="13" y="11" width="45" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -157,7 +157,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="o7v-Os-52t">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="o7v-Os-52t">
                                 <rect key="frame" x="16" y="15" width="45" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -212,7 +212,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="2dA-dG-OqK">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="2dA-dG-OqK">
                                 <rect key="frame" x="13" y="13" width="45" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -251,7 +251,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cum-qQ-Nvw">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="cum-qQ-Nvw">
                                 <rect key="frame" x="15" y="16" width="45" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
@@ -295,6 +295,55 @@
         <image name="orange-button.png" width="640" height="480"/>
         <image name="pink-button.png" width="640" height="480"/>
     </resources>
+    <classes>
+        <class className="GLESGameState3D" superclassName="GLKViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GLESGameState3D.h"/>
+        </class>
+        <class className="GSAbout" superclassName="GameState">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSAbout.h"/>
+            <relationships>
+                <relationship kind="action" name="backToMenu:"/>
+            </relationships>
+        </class>
+        <class className="GSConnectionSettings" superclassName="GameState">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSConnectionSettings.h"/>
+            <relationships>
+                <relationship kind="action" name="backToSettings:"/>
+                <relationship kind="outlet" name="peerTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="GSESPlayGame" superclassName="GLESGameState3D">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSESPlayGame.h"/>
+            <relationships>
+                <relationship kind="action" name="backToMenu:"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="clientScore" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GSMainMenu" superclassName="GameState">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSMainMenu.h"/>
+            <relationships>
+                <relationship kind="action" name="aboutButton:"/>
+                <relationship kind="action" name="playGameButton:"/>
+                <relationship kind="action" name="settingsButton:"/>
+            </relationships>
+        </class>
+        <class className="GSSettings" superclassName="GameState">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSSettings.h"/>
+            <relationships>
+                <relationship kind="action" name="backToMenu:"/>
+                <relationship kind="action" name="changeMainDeviceSeg:"/>
+                <relationship kind="action" name="connectionSettingsButton:"/>
+                <relationship kind="outlet" name="mainDeviceSeg" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="GameState" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameState.h"/>
+        </class>
+        <class className="ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
