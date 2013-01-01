@@ -21,15 +21,25 @@
     [CommunicationManager initialize];
     
     NSString *deviceType = [UIDevice currentDevice].model;
+    NSLog(@"DEVICE TYPE: %@ , HEIGHT: %f", deviceType, window.frame.size.height);
+    
     int devicetype = DEVICE_TYPE_IPADMINI;
     
     if([deviceType isEqualToString:@"iPhone"]) {
-        devicetype = DEVICE_TYPE_IPHONE3GS;
+        if (window.frame.size.height == 568)
+            devicetype = DEVICE_TYPE_IPHONE5;
+        else
+            devicetype = DEVICE_TYPE_IPHONE3GS;
+    }else{
+        if (window.frame.size.height == 2048)
+            devicetype = DEVICE_TYPE_IPAD_RETINA;
+        else
+            devicetype = DEVICE_TYPE_IPADMINI;
     }
     
     [gCommunicationManager setDEVICE_TYPE:devicetype];
-    [gCommunicationManager setDEVICE_WIDTH:window.frame.size.width];
-    [gCommunicationManager setDEVICE_HEIGHT:window.frame.size.height];
+    [gCommunicationManager setDEVICE_WIDTH:DEVICES_WIDTH[devicetype]];
+    [gCommunicationManager setDEVICE_HEIGHT:DEVICES_HEIGHT[devicetype]];
     [gCommunicationManager setDEVICE_RATIO:DEVICES_RATIO[devicetype]];
     
     NSLog(@"DEVICE_WIDTH: %d", gCommunicationManager.DEVICE_WIDTH);
