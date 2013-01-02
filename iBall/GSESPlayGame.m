@@ -227,8 +227,11 @@
     [Ball initialize];
     
     // Add texture for ball
-    [Ball addTexture:@"bia.jpeg"];
-    [Ball addTexture:@"bia2.jpeg"];
+    [Ball addTexture:@"ball-bia.jpeg"];
+    [Ball addTexture:@"ball-bia2.jpeg"];
+    [Ball addTexture:@"ball-orange.png"];
+    [Ball addTexture:@"ball-red.png"];
+    [Ball addTexture:@"ball-blue.png"];
     
     if (![gCommunicationManager isMainDevice]) {
         [Flipper initialize];
@@ -262,7 +265,7 @@
         pos.y = 200.0;
         vel.y = -4.0;
         
-        Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:1];
+        Ball *ball3 = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:2];
         [ballArray addObject:ball3];
     }
     
@@ -344,8 +347,9 @@
             if ([ballArray count] < BALL_MAX_NUM) {
                 GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
                 GLKVector3 vel = GLKVector3Make(5.5, 6.5, 0.0);
-            
-                Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:0];
+                
+                int tex = rand()%BALL_TEXTURE_NUM;
+                Ball *ball = [[Ball alloc] initWithPosVelRadiTex:pos andVel:vel andRadius:BALL_RADIUS andTex:tex];
                 [ballArray addObject:ball];
             }
             addBallTimer = 0.0f;
