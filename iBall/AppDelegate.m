@@ -11,6 +11,9 @@
 #import "GLESGameState.h"
 #import "CommunicationManager.h"
 
+#import <sys/types.h>
+#import <sys/sysctl.h>
+
 @implementation AppDelegate
 @synthesize window;
 
@@ -19,23 +22,36 @@
     // Override point for customization after application launch.
     
     [CommunicationManager initialize];
+
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString *platform = [NSString stringWithUTF8String:machine];
+    free(machine);
     
-    NSString *deviceType = [UIDevice currentDevice].model;
-    NSLog(@"DEVICE TYPE: %@ , HEIGHT: %f", deviceType, window.frame.size.height);
+    NSLog(@"%@", platform);
     
     int devicetype = DEVICE_TYPE_IPADMINI;
     
-    if([deviceType isEqualToString:@"iPhone"]) {
-        if (window.frame.size.height == 568)
-            devicetype = DEVICE_TYPE_IPHONE5;
-        else
-            devicetype = DEVICE_TYPE_IPHONE3GS;
-    }else{
-        if (window.frame.size.height == 2048)
-            devicetype = DEVICE_TYPE_IPAD_RETINA;
-        else
-            devicetype = DEVICE_TYPE_IPADMINI;
-    }
+    if ([platform isEqualToString:@"iPhone2,1"])
+        devicetype = DEVICE_TYPE_IPHONE3GS;
+    
+    if ([platform compare:@"iPhone3" options:0 range:NSMakeRange(0, 7)] == NSOrderedSame)
+        devicetype = DEVICE_TYPE_IPHONE4;
+    
+    if ([platform isEqualToString:@"iPhone4,1"])
+        devicetype = DEVICE_TYPE_IPHONE4S;
+    
+    if ([platform compare:@"iPhone5" options:0 range:NSMakeRange(0, 7)] == NSOrderedSame)
+        devicetype = DEVICE_TYPE_IPHONE5;
+    
+    if ([platform compare:@"iPad2" options:0 range:NSMakeRange(0, 5)] == NSOrderedSame)
+        devicetype = DEVICE_TYPE_IPAD2;
+    
+    if ([platform isEqualToString:@"iPad2,5"])
+        devicetype = DEVICE_TYPE_IPADMINI;
+   
     
     [gCommunicationManager setDEVICE_TYPE:devicetype];
     [gCommunicationManager setDEVICE_WIDTH:DEVICES_WIDTH[devicetype]];
