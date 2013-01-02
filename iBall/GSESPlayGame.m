@@ -640,7 +640,8 @@
 {
     //self.paused = !self.paused;
     UITouch *touch = [touches anyObject];
-    GLKVector3 touchedPoint = [gCommunicationManager convertCoordinationTo3D:[touch locationInView:self.view]];
+    CGPoint p = [touch locationInView:self.view];
+    GLKVector3 touchedPoint = [gCommunicationManager convertCoordinationTo3D:p];
     
     if (GLKVector3Distance(touchedPoint, leftFlipperController.position) < FLIPPER_CONTROLLER_RAIDUS) {
         [leftFlipper flip];
