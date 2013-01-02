@@ -125,6 +125,7 @@
     }
     
     if (!alreadyExit) {
+        NSLog(@"ADD NEW CONNECTION LINE");
         PeerInfor *newPeer = [[PeerInfor alloc] initWithAll:peerID andTransformMatrix:matrix andDirection:pDirection andLineStartPoint:sPoint andLineEndPoint:ePoint];
         [readyPeerArray addObject:newPeer];
     }
@@ -168,7 +169,7 @@
     
     // edit score label and back button
     if (pDirection == DIRECTION_LEFT) {
-        CGAffineTransform trans = CGAffineTransformMakeTranslation(gCommunicationManager.DEVICE_WIDTH/2.0f - 40.0f, 0.0f);
+        CGAffineTransform trans = CGAffineTransformMakeTranslation(gCommunicationManager.DEVICE_WIDTH/2.0f - 40.0f, gCommunicationManager.DEVICE_HEIGHT/2.0f);
         [clientScore setTransform:CGAffineTransformRotate(trans, -M_PI_2)];
         
         trans = CGAffineTransformMakeTranslation(0.0f, gCommunicationManager.DEVICE_HEIGHT - 70.0f);
@@ -176,7 +177,7 @@
     }
     else
     {
-        CGAffineTransform trans = CGAffineTransformMakeTranslation(-gCommunicationManager.DEVICE_WIDTH/2.0f + 40.0f, 0.0f);
+        CGAffineTransform trans = CGAffineTransformMakeTranslation(-gCommunicationManager.DEVICE_WIDTH/2.0f + 40.0f, gCommunicationManager.DEVICE_HEIGHT/2.0f);
         [clientScore setTransform:CGAffineTransformRotate(trans, M_PI_2)];
         
         trans = CGAffineTransformMakeTranslation(gCommunicationManager.DEVICE_WIDTH - 70.0f, 0.0f);
