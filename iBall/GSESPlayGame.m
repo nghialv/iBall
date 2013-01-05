@@ -227,11 +227,11 @@
     [Ball initialize];
     
     // Add texture for ball
-    [Ball addTexture:@"ball-bia.jpeg"];
-    [Ball addTexture:@"ball-bia2.jpeg"];
-    [Ball addTexture:@"ball-orange.png"];
-    [Ball addTexture:@"ball-red.png"];
-    [Ball addTexture:@"ball-blue.png"];
+    [Ball addTexture:@"ball-sasuke-white.png"];
+    [Ball addTexture:@"ball-kakashi-green.png"];
+    [Ball addTexture:@"ball-kakashi-orange.png"];
+    [Ball addTexture:@"ball-kakashi-red.png"];
+    [Ball addTexture:@"ball-kakashi-yellow.png"];
     
     if (![gCommunicationManager isMainDevice]) {
         [Flipper initialize];
