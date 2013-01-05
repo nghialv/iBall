@@ -48,6 +48,6 @@ static float DEVICES_RATIO[] = {RATIO_K/163.0, RATIO_K/163.0, RATIO_K/163.0, RAT
 
 #define BALL_MAX_NUM 20
 #define BALL_TEXTURE_NUM 5
-#define BALL_MAX_VELOCITY 6.5f
+#define BALL_MAX_VELOCITY 10.0f
 
 #endif

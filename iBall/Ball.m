@@ -97,11 +97,12 @@ static NSMutableArray* ballTextureInforArray;
     if (self) {
         position = pos;
         velocity = vel;
+        acceleration = GLKVector3Make(0.0f, 0.0f, 0.0f);
         scale = GLKVector3Make(radius*2, radius*2, radius*2);
         rotationAxis = GLKVector3Make(0.0f, 0.0f, 1.0f);
         angle = 0;
         resetVelocity = false;
-        
+    
         if (texIndex > 0)
             textureIndex = texIndex % [ballTextureInforArray count];
         else
