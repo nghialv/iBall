@@ -9,10 +9,11 @@
 #import "Entity.h"
 
 @implementation Entity
-@synthesize position, velocity, scale;
+@synthesize position, velocity, acceleration, scale;
 
 - (void)update
 {
+    velocity = GLKVector3Add(velocity, acceleration);
     position = GLKVector3Add(position, velocity);
 }
 

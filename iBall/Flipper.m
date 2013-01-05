@@ -128,6 +128,11 @@
     return position;
 }
 
+- (GLKVector3) getCenterPointOfFlipper
+{
+    return GLKMatrix4MultiplyVector3WithTranslation(modelMatrix, GLKVector3Make(0.0f, 0.0f, 0.0f));
+}
+
 -(GLKVector3) getNormalVector
 {
     GLKVector3 d = GLKVector3Subtract([self getEndPointOfFlipper], [self getStartPointOfFlipper]);
@@ -147,7 +152,7 @@
 - (float) getSpeed
 {
     if (flipping) {
-        return 1.0f;
+        return fabsf(angleVelocity*FLIPPER_LENGTH*0.8f);
     }
     else
         return 0.0f;

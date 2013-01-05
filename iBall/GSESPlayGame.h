@@ -57,4 +57,6 @@
 - (void)handleCollisionWithFlipper:(Flipper *)flipper andBall:(Ball *)b;
 - (void)handlePassedBall:(Ball *)b;
 
+- (float)distanceFromBallToFlipper:(Flipper*)f andBall:(Ball*)b;
+- (Boolean) canAddNewBall;
 @end

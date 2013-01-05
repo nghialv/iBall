@@ -81,6 +81,7 @@ static AGLKVertexAttribArrayBuffer* cubeVertexTextureCoordBuffer;
         angle = ang;
         position = pos;
         velocity = GLKVector3Make(0, 0, 0);
+        acceleration = GLKVector3Make(0, 0, 0);
         scale = GLKVector3Make(w, l, 1.0f);
     }
     return self;

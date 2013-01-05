@@ -14,8 +14,13 @@
     float angle;
     GLKVector3 rotationAxis;
     int textureIndex;
+    
+    float minVelocity;
+    Boolean resetVelocity;
 }
 
+@property Boolean resetVelocity;
+@property float minVelocity;
 @property int textureIndex;
 
 + (void)enableBuffer;
@@ -28,6 +33,8 @@
 
 - (void)redictX;
 - (void)redictY;
+
+- (void)checkResetVelocity;
 
 @end
 

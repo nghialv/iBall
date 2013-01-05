@@ -29,6 +29,8 @@
 - (void) flip;
 - (GLKVector3) getEndPointOfFlipper;
 - (GLKVector3) getStartPointOfFlipper;
+- (GLKVector3) getCenterPointOfFlipper;
+
 - (void) changeAngleVelocityDirection;
 - (GLKVector3) getNormalVector;
 - (float) getSpeed;

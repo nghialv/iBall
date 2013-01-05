@@ -313,21 +313,18 @@
                     
                     GLKVector3 b2Velx = GLKVector3MultiplyScalar(directionB2toB, GLKVector3DotProduct(b2Vel, directionB2toB));
                     
-                    {  // Update own velocity
+                    // Update own velocity
                         b.velocity = GLKVector3Subtract(bVel,bVelx);
                         b.velocity = GLKVector3Add(b.velocity, b2Velx);
-                        
-                        // update
-                        b.position = GLKVector3Add(b.position,b.velocity);
-                    }
                     
-                    {  // Update other ball's velocity
+                    // Update other ball's velocity
                         b2.velocity = GLKVector3Subtract(b2Vel,b2Velx);
                         b2.velocity = GLKVector3Add(b2.velocity, bVelx);
                         
-                        // update
-                        b2.position = GLKVector3Add(b2.position,b2.velocity);
-                    }
+                    // update position
+                    //b2.position = GLKVector3Add(b.position, GLKVector3MultiplyScalar(directionBtoB2, BALL_RADIUS));
+                    b.position = GLKVector3Add(b.position,b.velocity);
+                    b2.position = GLKVector3Add(b2.position,b2.velocity);
                 }
             }
         }
@@ -349,7 +346,7 @@
     // add newball
     if ([gCommunicationManager isMainDevice]) {
         addBallTimer += self.timeSinceLastUpdate;
-        if (addBallTimer > 1.5f) {
+        if (addBallTimer > 1.5f && [self canAddNewBall]) {
             if ([ballArray count] < BALL_MAX_NUM) {
                 GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
                 GLKVector3 vel = GLKVector3Make(5.5, 6.5, 0.0);
@@ -361,6 +358,16 @@
             addBallTimer = 0.0f;
         }
     }
+}
+
+- (Boolean) canAddNewBall
+{
+    for (Ball *b in ballArray)
+    {
+        if (GLKVector3Distance(b.position, GLKVector3Make(0.0f, 0.0f, 0.0f)) < BALL_RADIUS*2.5f)
+            return false;
+    }
+    return true;
 }
 
 - (void)handleCollisionWithFlippers:(Ball *)b
@@ -411,15 +418,11 @@
 
 - (void) handleCollisionWithFlipper:(Flipper *)flipper andBall:(Ball *)b
 {
-    GLKVector3 flipperStartPoint = [flipper getStartPointOfFlipper];
-    GLKVector3 flipperEndPoint = [flipper getEndPointOfFlipper];
-    float A = flipperEndPoint.y - flipperStartPoint.y;
-    float B = flipperStartPoint.x - flipperEndPoint.x;
-    float C = flipperEndPoint.x * flipperStartPoint.y - flipperStartPoint.x * flipperEndPoint.y;
+    GLKVector3 flipperCenterPoint = [flipper getCenterPointOfFlipper];
+    float d2 = GLKVector3Distance(flipperCenterPoint, b.position);
+    float delta = BALL_RADIUS + FLIPPER_WIDTH/2 - [self distanceFromBallToFlipper:flipper andBall:b];
     
-    float d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
-    float d2 = GLKVector3Distance(flipperStartPoint, b.position);
-    if (d < BALL_RADIUS + FLIPPER_WIDTH/2 && d2 < (FLIPPER_LENGTH+BALL_RADIUS)) {
+    if (delta >= 0.0f && d2 < (FLIPPER_LENGTH+BALL_RADIUS)/2.0f) {
         
         //play sound
         AudioServicesPlaySystemSound(soundId);
@@ -431,14 +434,32 @@
         
         GLKVector3 bVelx = GLKVector3MultiplyScalar(directionBtoB2, GLKVector3DotProduct(bVel, directionBtoB2));
         bVelx = GLKVector3MultiplyScalar(bVelx, -2.0f);
+    
         
         // Update own velocity
         b.velocity = GLKVector3Add(b.velocity, bVelx);
+        NSLog(@"Flipper velocity: %f", [flipper getSpeed]);
+        b.minVelocity = GLKVector3Length(b.velocity);
+        b.acceleration = GLKVector3MultiplyScalar(flipperVel, -[flipper getSpeed]/10.0f);
+        b.resetVelocity = true;
         b.velocity = GLKVector3Add(b.velocity, GLKVector3MultiplyScalar(flipperVel, [flipper getSpeed]));
         
+        // update position
+        b.position = GLKVector3Add(b.position, GLKVector3MultiplyScalar(flipperVel, delta));
         b.position = GLKVector3Add(b.position,b.velocity);
-        [flipper changeAngleVelocityDirection];
+        //[flipper changeAngleVelocityDirection];
     }
+}
+
+- (float) distanceFromBallToFlipper:(Flipper *)f andBall:(Ball *)b
+{
+    GLKVector3 flipperStartPoint = [f getStartPointOfFlipper];
+    GLKVector3 flipperEndPoint = [f getEndPointOfFlipper];
+    float A = flipperEndPoint.y - flipperStartPoint.y;
+    float B = flipperStartPoint.x - flipperEndPoint.x;
+    float C = flipperEndPoint.x * flipperStartPoint.y - flipperStartPoint.x * flipperEndPoint.y;
+    
+    return abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
 }
 
 - (void)handlePassedBall:(Ball *)b
@@ -479,6 +500,8 @@
             if (p.direction == DIRECTION_UP && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
                 NSLog(@"SEND ball");
                 
+                [b checkResetVelocity];
+                
                 [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
                 [willRemoveBallArray addObject:b];
                 
@@ -499,6 +522,8 @@
         {
             if (p.direction == DIRECTION_DOWN && b.position.x < p.line.startPoint.x && b.position.x > p.line.endPoint.x) {
                 NSLog(@"SEND ball");
+                
+                [b checkResetVelocity];
                 
                 [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
                 [willRemoveBallArray addObject:b];
@@ -521,6 +546,8 @@
             if (p.direction == DIRECTION_LEFT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
                 NSLog(@"SEND ball");
                 
+                [b checkResetVelocity];
+                
                 [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
                 [willRemoveBallArray addObject:b];
                 
@@ -541,6 +568,8 @@
         {
             if (p.direction == DIRECTION_RIGHT && b.position.y < p.line.startPoint.y && b.position.y > p.line.endPoint.y) {
                 NSLog(@"SEND ball");
+                
+                [b checkResetVelocity];
                 
                 [gCommunicationManager sendBallData:p.peerId andStartPosition:b.position andVelocity:b.velocity andTexIndex:b.textureIndex];
                 [willRemoveBallArray addObject:b];

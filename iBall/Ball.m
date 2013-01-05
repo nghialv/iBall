@@ -12,7 +12,7 @@
 
 @implementation Ball
 
-@synthesize textureIndex;
+@synthesize textureIndex, minVelocity, resetVelocity;
 
 static BOOL initialized = NO;
 static AGLKVertexAttribArrayBuffer* ballVertexPositionBuffer;
@@ -100,6 +100,8 @@ static NSMutableArray* ballTextureInforArray;
         scale = GLKVector3Make(radius*2, radius*2, radius*2);
         rotationAxis = GLKVector3Make(0.0f, 0.0f, 1.0f);
         angle = 0;
+        resetVelocity = false;
+        
         if (texIndex > 0)
             textureIndex = texIndex % [ballTextureInforArray count];
         else
@@ -110,6 +112,11 @@ static NSMutableArray* ballTextureInforArray;
 
 - (void)update
 {
+    if (GLKVector3Length(velocity) < minVelocity){
+        acceleration.x = acceleration.y = acceleration.z = 0.0f;
+    }
+    
+    velocity = GLKVector3Add(velocity, acceleration);
     position = GLKVector3Add(position, velocity);
     rotationAxis.x = velocity.x;
     rotationAxis.y = velocity.y;
@@ -124,6 +131,17 @@ static NSMutableArray* ballTextureInforArray;
     
     if (angle > 2*M_PI) {
         angle = 0.0;
+    }
+}
+
+- (void) checkResetVelocity
+{
+    if (resetVelocity) {
+        if (minVelocity > BALL_MAX_VELOCITY)
+            minVelocity = BALL_MAX_VELOCITY;
+        velocity = GLKVector3MultiplyScalar(GLKVector3Normalize(velocity), minVelocity);
+        acceleration.x = acceleration.y = acceleration.z = 0.0f;
+        resetVelocity = false;
     }
 }
 
