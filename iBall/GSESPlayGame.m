@@ -31,6 +31,12 @@
     [gCommunicationManager setDelegate:self];
     
     [self startRecognizationGestures];
+    
+    
+    // for sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"collision-sound" ofType:@"mp3"];
+    CFURLRef soundURL = (__bridge CFURLRef)[NSURL fileURLWithPath:soundPath];
+    AudioServicesCreateSystemSoundID(soundURL, &soundId);
 }
 
 - (void) dealloc
@@ -414,6 +420,10 @@
     float d = abs(A*b.position.x + B*b.position.y + C)/sqrtf(powf(A, 2)+powf(B, 2));
     float d2 = GLKVector3Distance(flipperStartPoint, b.position);
     if (d < BALL_RADIUS + FLIPPER_WIDTH/2 && d2 < (FLIPPER_LENGTH+BALL_RADIUS)) {
+        
+        //play sound
+        AudioServicesPlaySystemSound(soundId);
+        
         GLKVector3 bVel = b.velocity;
         
         GLKVector3 flipperVel = [flipper getNormalVector];

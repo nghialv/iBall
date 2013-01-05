@@ -13,6 +13,7 @@
 #import "Flipper.h"
 #import "MyLine.h"
 #import "PeerInfor.h"
+#import <AudioToolbox/AudioServices.h>
 
 @interface GSESPlayGame : GLESGameState3D <CommunicationManagerDelegate, UIGestureRecognizerDelegate>
 {
@@ -36,6 +37,9 @@
     IBOutlet UIButton *backButton;
     
     float addBallTimer;
+    
+    // for sound
+    SystemSoundID soundId;
 }
 
 

@@ -52,6 +52,7 @@
 		DC95C6E8168F536C00C5259A /* PeerInfor.m in Sources */ = {isa = PBXBuildFile; fileRef = DC95C6E7168F536C00C5259A /* PeerInfor.m */; };
 		DC9BE4AB168EA60D008668B3 /* Cube.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AA168EA60D008668B3 /* Cube.m */; };
 		DC9BE4B0168EB518008668B3 /* MyLine.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AF168EB518008668B3 /* MyLine.m */; };
+		DCC31D40169875AF00BA6584 /* collision-sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DCC31D3F169875AF00BA6584 /* collision-sound.mp3 */; };
 		DCC76E3E1691F6F0007FF9F5 /* back-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DCC76E3D1691F6F0007FF9F5 /* back-icon.png */; };
 		DCC76E421691FAA7007FF9F5 /* green-button.png in Resources */ = {isa = PBXBuildFile; fileRef = DCC76E3F1691FAA7007FF9F5 /* green-button.png */; };
 		DCC76E431691FAA7007FF9F5 /* orange-button.png in Resources */ = {isa = PBXBuildFile; fileRef = DCC76E401691FAA7007FF9F5 /* orange-button.png */; };
@@ -141,6 +142,7 @@
 		DC9BE4AD168EA701008668B3 /* cubeData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cubeData.h; sourceTree = "<group>"; };
 		DC9BE4AE168EB518008668B3 /* MyLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLine.h; sourceTree = "<group>"; };
 		DC9BE4AF168EB518008668B3 /* MyLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLine.m; sourceTree = "<group>"; };
+		DCC31D3F169875AF00BA6584 /* collision-sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "collision-sound.mp3"; path = "../../../../../../../Desktop/collision-sound.mp3"; sourceTree = "<group>"; };
 		DCC76E3D1691F6F0007FF9F5 /* back-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-icon.png"; sourceTree = "<group>"; };
 		DCC76E3F1691FAA7007FF9F5 /* green-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-button.png"; sourceTree = "<group>"; };
 		DCC76E401691FAA7007FF9F5 /* orange-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange-button.png"; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 		DC19875B16785591006C138A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DCC31D3F169875AF00BA6584 /* collision-sound.mp3 */,
 				DC3F99611698551800800978 /* ball-sasuke-white.png */,
 				DC3F9959169853CF00800978 /* ball-kakashi-green.png */,
 				DC3F995A169853CF00800978 /* ball-kakashi-orange.png */,
@@ -468,6 +471,7 @@
 				DC3F995F169853CF00800978 /* ball-kakashi-red.png in Resources */,
 				DC3F9960169853CF00800978 /* ball-kakashi-yellow.png in Resources */,
 				DC3F99621698551800800978 /* ball-sasuke-white.png in Resources */,
+				DCC31D40169875AF00BA6584 /* collision-sound.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
