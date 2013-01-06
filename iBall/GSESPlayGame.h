@@ -38,11 +38,9 @@
     IBOutlet UIButton *backButton;
     
     float addBallTimer;
-    
-    // for sound
-    SystemSoundID soundId;
 }
 
+@property(nonatomic, retain)AVAudioPlayer *collisionSound;
 @property(nonatomic, retain)AVAudioPlayer *menuBgm;
 
 - (void)setupGL;

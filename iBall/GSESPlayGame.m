@@ -34,16 +34,17 @@
     
     
     // for sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"collision-sound" ofType:@"mp3"];
-    CFURLRef soundURL = (__bridge CFURLRef)[NSURL fileURLWithPath:soundPath];
-    AudioServicesCreateSystemSoundID(soundURL, &soundId);
-    
     if ([gCommunicationManager isMainDevice]) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"menu-bgm" ofType:@"aif"];
         NSURL *url = [NSURL fileURLWithPath:path];
         self.menuBgm = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
         self.menuBgm.numberOfLoops = -1;
         [self.menuBgm play];
+    }else
+    {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"collision-sound" ofType:@"mp3"];
+        NSURL *url = [NSURL fileURLWithPath:path];
+        self.collisionSound = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     }
 }
 
@@ -433,7 +434,9 @@
     if (delta >= 0.0f && d2 < (FLIPPER_LENGTH+BALL_RADIUS/2.0f)/2.0f) {
         
         //play sound
-        AudioServicesPlaySystemSound(soundId);
+        //AudioServicesPlaySystemSound(soundId);
+        if (self.collisionSound)
+            [self.collisionSound play];
         
         GLKVector3 bVel = b.velocity;
         
