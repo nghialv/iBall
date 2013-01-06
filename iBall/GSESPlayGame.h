@@ -14,6 +14,7 @@
 #import "MyLine.h"
 #import "PeerInfor.h"
 #import <AudioToolbox/AudioServices.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface GSESPlayGame : GLESGameState3D <CommunicationManagerDelegate, UIGestureRecognizerDelegate>
 {
@@ -42,6 +43,7 @@
     SystemSoundID soundId;
 }
 
+@property(nonatomic, retain)AVAudioPlayer *menuBgm;
 
 - (void)setupGL;
 - (void)tearDownGL;

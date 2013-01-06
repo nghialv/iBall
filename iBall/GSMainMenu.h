@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "GameState.h"
-
+#import <AVFoundation/AVFoundation.h>
 
 @interface GSMainMenu : GameState
+
+@property(nonatomic, retain)AVAudioPlayer *menuBgm;
+@property(nonatomic, retain)AVAudioPlayer *buttonSound;
 
 - (IBAction) playGameButton:(id)sender;
 - (IBAction) settingsButton:(id)sender;

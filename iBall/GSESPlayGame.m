@@ -37,6 +37,14 @@
     NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"collision-sound" ofType:@"mp3"];
     CFURLRef soundURL = (__bridge CFURLRef)[NSURL fileURLWithPath:soundPath];
     AudioServicesCreateSystemSoundID(soundURL, &soundId);
+    
+    if ([gCommunicationManager isMainDevice]) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"menu-bgm" ofType:@"aif"];
+        NSURL *url = [NSURL fileURLWithPath:path];
+        self.menuBgm = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+        self.menuBgm.numberOfLoops = -1;
+        [self.menuBgm play];
+    }
 }
 
 - (void) dealloc
@@ -422,7 +430,7 @@
     float d2 = GLKVector3Distance(flipperCenterPoint, b.position);
     float delta = BALL_RADIUS + FLIPPER_WIDTH/2 - [self distanceFromBallToFlipper:flipper andBall:b];
     
-    if (delta >= 0.0f && d2 < (FLIPPER_LENGTH+BALL_RADIUS)/2.0f) {
+    if (delta >= 0.0f && d2 < (FLIPPER_LENGTH+BALL_RADIUS/2.0f)/2.0f) {
         
         //play sound
         AudioServicesPlaySystemSound(soundId);

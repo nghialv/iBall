@@ -272,55 +272,6 @@
         <image name="playgame-button.png" width="750" height="750"/>
         <image name="settings-button.png" width="750" height="750"/>
     </resources>
-    <classes>
-        <class className="GLESGameState3D" superclassName="GLKViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GLESGameState3D.h"/>
-        </class>
-        <class className="GSAbout" superclassName="GameState">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSAbout.h"/>
-            <relationships>
-                <relationship kind="action" name="backToMenu:"/>
-            </relationships>
-        </class>
-        <class className="GSConnectionSettings" superclassName="GameState">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSConnectionSettings.h"/>
-            <relationships>
-                <relationship kind="action" name="backToSettings:"/>
-                <relationship kind="outlet" name="peerTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="GSESPlayGame" superclassName="GLESGameState3D">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSESPlayGame.h"/>
-            <relationships>
-                <relationship kind="action" name="backToMenu:"/>
-                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="clientScore" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="GSMainMenu" superclassName="GameState">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSMainMenu.h"/>
-            <relationships>
-                <relationship kind="action" name="aboutButton:"/>
-                <relationship kind="action" name="playGameButton:"/>
-                <relationship kind="action" name="settingsButton:"/>
-            </relationships>
-        </class>
-        <class className="GSSettings" superclassName="GameState">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GSSettings.h"/>
-            <relationships>
-                <relationship kind="action" name="backToMenu:"/>
-                <relationship kind="action" name="changeMainDeviceSeg:"/>
-                <relationship kind="action" name="connectionSettingsButton:"/>
-                <relationship kind="outlet" name="mainDeviceSeg" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="GameState" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameState.h"/>
-        </class>
-        <class className="ViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

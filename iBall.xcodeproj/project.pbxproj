@@ -55,12 +55,15 @@
 		DC95C6E8168F536C00C5259A /* PeerInfor.m in Sources */ = {isa = PBXBuildFile; fileRef = DC95C6E7168F536C00C5259A /* PeerInfor.m */; };
 		DC9BE4AB168EA60D008668B3 /* Cube.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AA168EA60D008668B3 /* Cube.m */; };
 		DC9BE4B0168EB518008668B3 /* MyLine.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9BE4AF168EB518008668B3 /* MyLine.m */; };
-		DCC31D40169875AF00BA6584 /* collision-sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DCC31D3F169875AF00BA6584 /* collision-sound.mp3 */; };
 		DCC76E3E1691F6F0007FF9F5 /* back-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DCC76E3D1691F6F0007FF9F5 /* back-icon.png */; };
 		DCCA119416787B4B001BE733 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCA119316787B4B001BE733 /* CommunicationManager.m */; };
 		DCD239CD167A1E5700D74D7C /* AGLKVertexAttribArrayBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD239CC167A1E5700D74D7C /* AGLKVertexAttribArrayBuffer.m */; };
 		DCD239D2167A1F7B00D74D7C /* ball-bia.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = DCD239D0167A1F7B00D74D7C /* ball-bia.jpeg */; };
 		DCD239D3167A1F7B00D74D7C /* ball-bia2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = DCD239D1167A1F7B00D74D7C /* ball-bia2.jpeg */; };
+		DCE16884169945A600F2386E /* collision-sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DCE16883169945A600F2386E /* collision-sound.mp3 */; };
+		DCE168871699462E00F2386E /* button-sound.aif in Resources */ = {isa = PBXBuildFile; fileRef = DCE168851699462E00F2386E /* button-sound.aif */; };
+		DCE168881699462E00F2386E /* menu-bgm.aif in Resources */ = {isa = PBXBuildFile; fileRef = DCE168861699462E00F2386E /* menu-bgm.aif */; };
+		DCE1688A1699488100F2386E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCE168891699488100F2386E /* AVFoundation.framework */; };
 		DCE2F8E816785D6C00D84949 /* GSConnectionSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2F8E716785D6C00D84949 /* GSConnectionSettings.m */; };
 		DCF92C6F1678DAED005DA7FA /* Ball.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF92C6E1678DAED005DA7FA /* Ball.m */; };
 		DCF92C721678DB42005DA7FA /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF92C711678DB42005DA7FA /* Entity.m */; };
@@ -145,7 +148,6 @@
 		DC9BE4AD168EA701008668B3 /* cubeData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cubeData.h; sourceTree = "<group>"; };
 		DC9BE4AE168EB518008668B3 /* MyLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLine.h; sourceTree = "<group>"; };
 		DC9BE4AF168EB518008668B3 /* MyLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLine.m; sourceTree = "<group>"; };
-		DCC31D3F169875AF00BA6584 /* collision-sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "collision-sound.mp3"; path = "../../../../../../../Desktop/collision-sound.mp3"; sourceTree = "<group>"; };
 		DCC76E3D1691F6F0007FF9F5 /* back-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-icon.png"; sourceTree = "<group>"; };
 		DCCA118416786B91001BE733 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		DCCA119216787B4B001BE733 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
@@ -155,6 +157,10 @@
 		DCD239CF167A1EC200D74D7C /* sphere.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sphere.h; sourceTree = "<group>"; };
 		DCD239D0167A1F7B00D74D7C /* ball-bia.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ball-bia.jpeg"; sourceTree = "<group>"; };
 		DCD239D1167A1F7B00D74D7C /* ball-bia2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ball-bia2.jpeg"; sourceTree = "<group>"; };
+		DCE16883169945A600F2386E /* collision-sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "collision-sound.mp3"; sourceTree = "<group>"; };
+		DCE168851699462E00F2386E /* button-sound.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "button-sound.aif"; sourceTree = "<group>"; };
+		DCE168861699462E00F2386E /* menu-bgm.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "menu-bgm.aif"; sourceTree = "<group>"; };
+		DCE168891699488100F2386E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		DCE2F8E616785D6C00D84949 /* GSConnectionSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSConnectionSettings.h; sourceTree = "<group>"; };
 		DCE2F8E716785D6C00D84949 /* GSConnectionSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSConnectionSettings.m; sourceTree = "<group>"; };
 		DCF92C6D1678DAED005DA7FA /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
@@ -168,6 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCE1688A1699488100F2386E /* AVFoundation.framework in Frameworks */,
 				DC19875A16785555006C138A /* GLKit.framework in Frameworks */,
 				DC1987581678554C006C138A /* QuartzCore.framework in Frameworks */,
 				DC19875616785543006C138A /* OpenAL.framework in Frameworks */,
@@ -219,6 +226,7 @@
 		DC19871016785476006C138A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DCE168891699488100F2386E /* AVFoundation.framework */,
 				DC19875916785555006C138A /* GLKit.framework */,
 				DC1987571678554C006C138A /* QuartzCore.framework */,
 				DC19875516785543006C138A /* OpenAL.framework */,
@@ -283,10 +291,12 @@
 		DC19875B16785591006C138A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DCE168851699462E00F2386E /* button-sound.aif */,
+				DCE168861699462E00F2386E /* menu-bgm.aif */,
+				DCE16883169945A600F2386E /* collision-sound.mp3 */,
 				DC49D3B61698A1BB00060703 /* about-button.png */,
 				DC49D3B71698A1BB00060703 /* playgame-button.png */,
 				DC49D3B81698A1BB00060703 /* settings-button.png */,
-				DCC31D3F169875AF00BA6584 /* collision-sound.mp3 */,
 				DC3F99611698551800800978 /* ball-sasuke-white.png */,
 				DC3F9959169853CF00800978 /* ball-kakashi-green.png */,
 				DC3F995A169853CF00800978 /* ball-kakashi-orange.png */,
@@ -468,10 +478,12 @@
 				DC3F995F169853CF00800978 /* ball-kakashi-red.png in Resources */,
 				DC3F9960169853CF00800978 /* ball-kakashi-yellow.png in Resources */,
 				DC3F99621698551800800978 /* ball-sasuke-white.png in Resources */,
-				DCC31D40169875AF00BA6584 /* collision-sound.mp3 in Resources */,
 				DC49D3B91698A1BB00060703 /* about-button.png in Resources */,
 				DC49D3BA1698A1BB00060703 /* playgame-button.png in Resources */,
 				DC49D3BB1698A1BB00060703 /* settings-button.png in Resources */,
+				DCE16884169945A600F2386E /* collision-sound.mp3 in Resources */,
+				DCE168871699462E00F2386E /* button-sound.aif in Resources */,
+				DCE168881699462E00F2386E /* menu-bgm.aif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
