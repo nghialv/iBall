@@ -6,7 +6,7 @@ iphone, ipad app
 Demo
 ----------------
 ### Youtube link
-  * [iBall ](http://www.youtube.com/watch?v=LDYUZcYTmFg)
+  * [iBall ](http://www.youtube.com/watch?v=PUP-rJ8HgCU)
   * [iBall Connection ](http://www.youtube.com/watch?v=3d3ndB-kdkw)
   * [iBall Playgame ](http://www.youtube.com/watch?v=h9JwP5YWmQk)
 
