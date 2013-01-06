@@ -13,7 +13,7 @@ Demo
 ![image](https://raw.github.com/nghialv2607/iBall/master/readmeData/image.png)
 
 #### Gamemenu screen
-![menu screen](https://raw.github.com/nghialv2607/iBall/master/readmeData/ipad-gamemenu.png)
+![menu screen](https://raw.github.com/nghialv2607/iBall/master/readmeData/ipad-gamemenu.PNG)
 
 #### Bluetooth Connection
-![available devices](https://raw.github.com/nghialv2607/iBall/master/readmeData/iphone-availabledevices.png)
+![available devices](https://raw.github.com/nghialv2607/iBall/master/readmeData/iphone-availabledevices.PNG)
