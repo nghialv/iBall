@@ -6,7 +6,8 @@ iphone, ipad app
 Demo
 ----------------
 ### Youtube link
-[iBall](http://crataj1-amo-app000.c4sa.net)
+[iBall Connection ](http://www.youtube.com/watch?v=3d3ndB-kdkw)
+[iBall Playgame ](http://www.youtube.com/watch?v=h9JwP5YWmQk)
 
 ### Screen Shot
 #### Welcome
