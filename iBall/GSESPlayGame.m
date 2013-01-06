@@ -354,7 +354,7 @@
     // add newball
     if ([gCommunicationManager isMainDevice]) {
         addBallTimer += self.timeSinceLastUpdate;
-        if (addBallTimer > 1.5f && [self canAddNewBall]) {
+        if (addBallTimer > 0.8f && [self canAddNewBall]) {
             if ([ballArray count] < BALL_MAX_NUM) {
                 GLKVector3 pos = GLKVector3Make(0.0, 0.0, 0.0);
                 GLKVector3 vel = GLKVector3Make(5.5, 6.5, 0.0);

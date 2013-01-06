@@ -10,8 +10,8 @@
 
 @implementation GSConnectionSettings
 {
-    NSMutableArray *availablePeers;
-    NSMutableArray *connectedPeers;
+    //NSMutableArray *availablePeers;
+    //NSMutableArray *connectedPeers;
 }
 
 #pragma mark - Mine
@@ -22,8 +22,8 @@
     [gCommunicationManager setDelegate:self];
     [gCommunicationManager initSession];
     
-    availablePeers = gCommunicationManager.availablePeerList;
-    connectedPeers = gCommunicationManager.connectedPeerList;
+    //availablePeers = gCommunicationManager.availablePeerList;
+    //connectedPeers = gCommunicationManager.connectedPeerList;
 }
 
 - (void) dealloc
@@ -41,10 +41,11 @@
 - (void) connectionStatusChanged
 {
     NSLog(@"TRANG THAI KET NOI THAY DOI");
-    for (NSString* p in availablePeers) {
+    for (NSString* p in gCommunicationManager.availablePeerList) {
         NSLog(@"A: %@", p);
     }
-    [self.peerTableView reloadData];
+    //[self.peerTableView reloadData];
+    [self.peerTableView performSelector:@selector(reloadData) onThread:[NSThread mainThread] withObject:nil waitUntilDone:YES];
 }
 
 - (void) receiveGameStart
@@ -71,8 +72,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0)
-        return [availablePeers count];
-    return [connectedPeers count];
+        return [gCommunicationManager.availablePeerList count];
+    return [gCommunicationManager.connectedPeerList count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -94,9 +95,9 @@
     }
     
     if (indexPath.section == 0)
-        cell.textLabel.text = [gCommunicationManager getNameOfDevice:[availablePeers objectAtIndex:indexPath.row]];
+        cell.textLabel.text = [gCommunicationManager getNameOfDevice:[gCommunicationManager.availablePeerList objectAtIndex:indexPath.row]];
     else
-        cell.textLabel.text = [gCommunicationManager getNameOfDevice:[connectedPeers objectAtIndex:indexPath.row]];
+        cell.textLabel.text = [gCommunicationManager getNameOfDevice:[gCommunicationManager.connectedPeerList objectAtIndex:indexPath.row]];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -116,11 +117,7 @@
     
     if (indexPath.section == 0) {
         [self.peerTableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-        [gCommunicationManager connectToDevice:[availablePeers objectAtIndex:indexPath.row]];
-        
-//        [connectedPeers addObject:[availablePeers objectAtIndex:indexPath.row]];
-//        [availablePeers removeObjectAtIndex:indexPath.row];
-//        [self.peerTableView reloadData];
+        [gCommunicationManager connectToDevice:[gCommunicationManager.availablePeerList objectAtIndex:indexPath.row]];
     }
 }
 
