@@ -11,7 +11,7 @@ Demo
   * [iBall Playgame ](http://www.youtube.com/watch?v=h9JwP5YWmQk)
 
 ### Screen Shot
-#### Welcome
+#### Image
 ![image](https://raw.github.com/nghialv2607/iBall/master/readmeData/image.png)
 
 #### Gamemenu screen
