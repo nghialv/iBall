@@ -19,3 +19,7 @@ Demo
 
 #### Bluetooth Connection
 ![available devices](https://raw.github.com/nghialv2607/iBall/master/readmeData/iphone-availabledevices.png)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nghialv/iball/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
